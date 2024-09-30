@@ -1,0 +1,29 @@
+@model IEnumerable<SphereWebsite.Data.Models.PostsModel>
+
+<h2>Posts</h2>
+
+<a asp-action="Create">Create New</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var post in Model)
+        {
+            <tr>
+                <td>@post.Title</td>
+                <td>@post.Description</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@post.PostID">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@post.PostID">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@post.PostID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
