@@ -1,23 +1,55 @@
 @model SphereWebsite.Data.Models.PostsModel
 
-<h2 class="my-4 text-center text-primary">Create Post</h2>
+<h2 class="my-4 text-center text-light">Create Post</h2>
 
-<form asp-action="Create" method="post" class="bg-light p-4 rounded shadow-sm">
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" placeholder="Enter the title here" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+<div class="container">
+    <form asp-action="Create" method="post" class="bg-dark p-4 rounded shadow-sm">
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label text-light"></label>
+            <input asp-for="Title" class="form-control bg-secondary text-light" placeholder="Enter the title here" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label text-light"></label>
+            <textarea asp-for="Description" class="form-control bg-secondary text-light" rows="5" placeholder="Write your post description here..." required></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-info btn-lg w-100">Create</button>
+    </form>
+
+    <div class="mt-3 text-center">
+        <a asp-action="Index" class="btn btn-link text-light">Back to List</a>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <textarea asp-for="Description" class="form-control" rows="5" placeholder="Write your post description here..."></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
-
-<div class="mt-3 text-center">
-    <a asp-action="Index" class="btn btn-link text-primary">Back to List</a>
 </div>
+
+<style>
+    body {
+        background-color: #23272a; 
+    }
+    .btn-info {
+        background-color: #7289da;
+        border-color: #2e26a7;
+    }
+    .btn-info:hover {
+        background-color: #5b6eae;
+    }
+    .text-light {
+        color: #ffffff;
+    }
+    .bg-secondary {
+        background-color: #343a40; 
+    }
+    .form-label {
+        font-weight: bold;
+    }
+    .form-control {
+        transition: background-color 0.3s;
+    }
+    .form-control:focus {
+        background-color: #495057; 
+        border-color: #7289da; 
+        box-shadow: 0 0 0 0.2rem rgba(114, 137, 218, 0.25); 
+    }
+</style>

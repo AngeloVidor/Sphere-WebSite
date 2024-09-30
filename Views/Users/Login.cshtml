@@ -7,26 +7,26 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white text-center">
+            <div class="card shadow-sm" style="background-color: #2c2f33; border: none;">
+                <div class="card-header bg-dark text-white text-center">
                     <h3>Login</h3>
                 </div>
                 <div class="card-body">
                     <form asp-action="Login" method="post" class="needs-validation" novalidate>
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label"></label>
-                            <input asp-for="Email" class="form-control" type="email" required />
+                            <label asp-for="Email" class="form-label text-light"></label>
+                            <input asp-for="Email" class="form-control bg-secondary text-light" type="email" required />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Password" class="form-label"></label>
-                            <input asp-for="Password" class="form-control" type="password" required />
+                            <label asp-for="Password" class="form-label text-light"></label>
+                            <input asp-for="Password" class="form-control bg-secondary text-light" type="password" required />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                            <button type="submit" class="btn btn-info btn-lg">Login</button>
                         </div>
                     </form>
 
@@ -38,7 +38,7 @@
                     }
 
                     <div class="mt-3 text-center">
-                        <a href="@Url.Action("Register", "Users")">Don't have an account? Register here.</a>
+                        <a href="@Url.Action("Register", "Users")" class="text-light">Don't have an account? Register here.</a>
                     </div>
                 </div>
             </div>
@@ -49,3 +49,21 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style>
+    body {
+        background-color: #23272a; 
+    }
+    .btn-info {
+        background-color: #7289da; 
+        border-color: #7289da;
+    }
+    .btn-info:hover {
+        background-color: #5b6eae; 
+    .text-light {
+        color: #ffffff; 
+    }
+    .bg-secondary {
+        background-color: #343a40; 
+    }
+</style>

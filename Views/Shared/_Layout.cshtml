@@ -8,11 +8,60 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SphereWebsite.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            background-color: #23272a; 
+            color: #ffffff; 
+        }
+        header {
+            background-color: #2c2f33;
+            border-bottom: 2px solid #7289da; 
+        }
+        .navbar-light .navbar-nav .nav-link {
+            color: #ffffff; 
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #7289da; 
+        }
+        .navbar-light .navbar-nav .nav-link.active {
+            color: #ffffff; 
+        }
+        .navbar-light .navbar-brand {
+            color: #ffffff; 
+        }
+        .btn-outline-primary {
+            border-color: #7289da; 
+            color: #7289da;
+        }
+        .btn-outline-primary:hover {
+            background-color: #7289da; 
+            color: #ffffff; 
+        }
+        .dropdown-menu {
+            background-color: #2c2f33; 
+        }
+        .dropdown-item {
+            color: #ffffff;
+        }
+        .dropdown-item:hover {
+            background-color: #7289da;
+        }
+        .footer {
+            background-color: #2c2f33; 
+            color: #b9bbbe; 
+        }
+        .footer a {
+            color: #7289da; 
+        }
+        .footer a:hover {
+            color: #ffffff;
+        }
+    </style>
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3">
+        <nav class="navbar navbar-expand-lg navbar-light shadow-sm py-3">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +82,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-user-circle"></i> @User.Identity.Name
                                 </a>
@@ -48,10 +97,9 @@
                                     <li>
                                         <form asp-area="" asp-controller="Users" asp-action="Logout" method="post"
                                             class="dropdown-item">
-                                            <button type="submit" class="btn btn-link">Logout</button>
+                                            <button type="submit" class="btn btn-link text-light">Logout</button>
                                         </form>
                                     </li>
-
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -64,11 +112,11 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users"
+                                <a class="nav-link" asp-area="" asp-controller="Users"
                                     asp-action="Register">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users"
+                                <a class="nav-link" asp-area="" asp-controller="Users"
                                     asp-action="Login">Login</a>
                             </li>
                         }
