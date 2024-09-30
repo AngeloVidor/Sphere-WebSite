@@ -14,6 +14,12 @@
                 <div class="card-body">
                     <form asp-action="Register" method="post" class="needs-validation" novalidate>
                         <div class="mb-3">
+                            <label asp-for="NickName" class="form-label text-light"></label>
+                            <input asp-for="NickName" class="form-control bg-secondary text-light" required />
+                            <span asp-validation-for="NickName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
                             <label asp-for="Name" class="form-label text-light"></label>
                             <input asp-for="Name" class="form-control bg-secondary text-light" required />
                             <span asp-validation-for="Name" class="text-danger"></span>

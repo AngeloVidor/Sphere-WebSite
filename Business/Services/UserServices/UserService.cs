@@ -29,6 +29,12 @@ namespace SphereWebsite.Business.Services
                 throw new Exception("Email já está registrado");
             }
 
+            var existingNickNameUser = await _userRepository.GetUserByNickName(user.NickName);
+            if(existingNickNameUser != null)
+            {
+                throw new Exception("NickName já está em uso");
+            }
+
             user.Password = HashPassword(user.Password);
             return await _userRepository.Register(user);
         }

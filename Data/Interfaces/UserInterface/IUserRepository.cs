@@ -11,5 +11,6 @@ namespace SphereWebsite.Data.Interfaces.UserInterface
         Task<UserModel> Register(UserModel user);
         Task<UserModel> Authenticate(string email, string password);
         Task<UserModel> GetUserByEmail(string email);
+        Task<UserModel> GetUserByNickName(string nickName);
     }
 }

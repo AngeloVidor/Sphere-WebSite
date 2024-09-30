@@ -36,5 +36,10 @@ namespace SphereWebsite.Data.Repositories.UserRepository
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<UserModel> GetUserByNickName(string nickName)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.NickName == nickName);
+        }
     }
 }
