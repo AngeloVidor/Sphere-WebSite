@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SphereWebsite.Business.Interfaces.UserInterface;
-using SphereWebsite.Business.Services;
 using SphereWebsite.Data.Models;
 
 namespace SphereWebsite.UI.Controllers
@@ -28,7 +27,7 @@ namespace SphereWebsite.UI.Controllers
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
-                Console.WriteLine($"Error for {ModelState.Keys}: {error.ErrorMessage}");
+                    Console.WriteLine($"Error: {error.ErrorMessage}");
                 }
                 return View(user);
             }
@@ -54,14 +53,28 @@ namespace SphereWebsite.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
-            var user = await _userService.Login(email, password);
-            if (user == null)
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                ViewBag.ErrorMessage = "Email ou senha incorretos.";
+                ViewBag.ErrorMessage = "Por favor, preencha todos os campos.";
                 return View();
             }
 
-            return RedirectToAction("Index", "Home");
+            try
+            {
+                var user = await _userService.Login(email, password, HttpContext);
+                if (user != null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+            }
+
+            return View();
         }
+
+       
     }
 }

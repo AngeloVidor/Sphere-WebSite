@@ -9,6 +9,6 @@ namespace SphereWebsite.Business.Interfaces.UserInterface
     public interface IUserService
     {
         Task<UserModel> RegisterUser(UserModel user);
-        Task<UserModel> Login(string email, string password);
+        Task<UserModel> Login(string email, string password, HttpContext httpContext);
     }
 }
