@@ -75,6 +75,11 @@ namespace SphereWebsite.UI.Controllers
             return View();
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _userService.Logout(HttpContext);
+            return RedirectToAction("Login", "Users");
+        }
     }
 }

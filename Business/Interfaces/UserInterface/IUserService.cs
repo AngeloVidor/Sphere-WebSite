@@ -10,5 +10,6 @@ namespace SphereWebsite.Business.Interfaces.UserInterface
     {
         Task<UserModel> RegisterUser(UserModel user);
         Task<UserModel> Login(string email, string password, HttpContext httpContext);
+        Task Logout(HttpContext httpContext);
     }
 }
