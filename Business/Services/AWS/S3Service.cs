@@ -26,7 +26,6 @@ namespace SphereWebsite.Business.Services.AWS
 
         public async Task<string> UploadFileAsync(IFormFile file)
         {
-            // Verifique se o arquivo não é nulo
             if (file == null || file.Length == 0)
             {
                 throw new ArgumentException("File is null or empty.");

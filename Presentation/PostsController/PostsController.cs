@@ -4,7 +4,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SphereWebsite.Business.Interfaces.CommentsInterface;
+using SphereWebsite.Business.Interfaces.S3Interface; // Adicione a referência para o S3
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
+using SphereWebsite.Data.Interfaces.UserInterface;
 using SphereWebsite.Data.Models;
 using SphereWebsite.Data.Models.PostsWithComments;
 
@@ -14,11 +16,21 @@ namespace SphereWebsite.Controllers
     {
         private readonly IPostsService _postsService;
         private readonly ICommentsService _commentsService;
+        private readonly IS3Service _s3Service;
+        private readonly IUserRepository _userRepository;
 
-        public PostsController(IPostsService postsService, ICommentsService commentsService)
+        public PostsController(
+            IPostsService postsService,
+            ICommentsService commentsService,
+            IUserRepository userRepository,
+            IS3Service s3Service
+            
+        )
         {
             _postsService = postsService;
             _commentsService = commentsService;
+            _userRepository = userRepository;
+            _s3Service = s3Service;
         }
 
         [HttpGet("GetAll")]
@@ -58,33 +70,40 @@ namespace SphereWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PostsModel post, IFormFile? image)
         {
+            // Obtém o UserId do usuário autenticado
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             post.UserId = int.TryParse(userId, out var id) ? id : 0;
 
-            Console.WriteLine(
-                $"Title: {post.Title}, Description: {post.Description}, UserId: {post.UserId}"
-            );
+            // Log para verificar o UserId obtido
+            Console.WriteLine($"User ID Obtido: {userId}");
+            Console.WriteLine($"User ID Convertido: {post.UserId}");
 
+            // Verifica se o UserId é válido
             if (post.UserId == 0)
             {
                 ModelState.AddModelError("UserId", "User ID is required and must be valid.");
+                Console.WriteLine("Erro: User ID não é válido.");
             }
 
+            // Verifica se o ModelState é válido
             if (ModelState.IsValid)
             {
+                // Tenta criar o post
                 await _postsService.CreatePost(post, image);
                 return RedirectToAction(nameof(Index));
             }
 
+            // Log de erros de validação
             foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
             {
                 Console.WriteLine($"Erro: {error.ErrorMessage}");
             }
 
+            // Retorna a view com o post e os erros
             return View(post);
         }
 
-        [HttpGet("Edit")]
+        [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var post = await _postsService.GetPostById(id);
@@ -95,23 +114,41 @@ namespace SphereWebsite.Controllers
             return View(post);
         }
 
-        [HttpPost]
+        [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, PostsModel post)
+        public async Task<IActionResult> Edit(int id, PostsModel post, IFormFile? image)
         {
-            if (id != post.PostID)
+            Console.WriteLine($"Edit called with ID: {id}, Title: {post.Title}, Description: {post.Description}, UserId: {post.UserId}");
+            var existingPost = await _postsService.GetPostById(id);
+            if (existingPost == null)
             {
-                return BadRequest();
+                Console.WriteLine("Post not found.");
+                return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (image != null && image.Length > 0)
             {
-                await _postsService.UpdatePost(post);
-                return RedirectToAction(nameof(Index));
+                Console.WriteLine($"Imagem recebida: {image.FileName}, Tamanho: {image.Length}");
+
+                var imageUrl = await _s3Service.UploadFileAsync(image);
+                existingPost.ImageUrl = imageUrl; 
             }
-            return View(post);
+            else
+            {
+                Console.WriteLine("A imagem está null ou vazia.");
+            }
+
+            existingPost.Title = post.Title;
+            existingPost.Description = post.Description;
+            existingPost.UserId = post.UserId;
+
+            await _postsService.UpdatePost(existingPost);
+            Console.WriteLine("Post atualizado com sucesso.");
+
+            return RedirectToAction("Index");
         }
 
+        [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var post = await _postsService.GetPostById(id);
@@ -122,7 +159,7 @@ namespace SphereWebsite.Controllers
             return View(post);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("Delete/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

@@ -18,6 +18,11 @@ namespace SphereWebsite.Data.Repositories.UserRepository
             _context = context;
         }
 
+        public async Task<UserModel> GetUserById(int userId)
+        {
+            return await _context.Users.FindAsync(userId);
+        }
+
         public async Task<UserModel> Authenticate(string email, string password)
         {
             return await _context.Users.FirstOrDefaultAsync(u =>
