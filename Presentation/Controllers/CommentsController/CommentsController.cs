@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SphereWebsite.Business.Interfaces.CommentsInterface;
@@ -95,18 +96,25 @@ namespace SphereWebsite.Presentation.Controllers.CommentsController
         [HttpPost]
         public async Task<IActionResult> AddComment(int postId, string content)
         {
-            var comment = new CommentsModel
-            {
-                PostID = postId,
-                Content = content,
-                UserID = 1,
-                CreatedAt = DateTime.Now
-            };
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (ModelState.IsValid)
+            if (int.TryParse(userIdString, out int userId))
             {
-                await _commentsService.AddComment(comment);
-                return Ok(new { success = true, message = "Comentário adicionado com sucesso!" });
+                var comment = new CommentsModel
+                {
+                    PostID = postId,
+                    Content = content,
+                    UserID = userId,
+                    CreatedAt = DateTime.Now
+                };
+
+                if (ModelState.IsValid)
+                {
+                    await _commentsService.AddComment(comment);
+                    return Ok(
+                        new { success = true, message = "Comentário adicionado com sucesso!" }
+                    );
+                }
             }
 
             return BadRequest(new { success = false, message = "Erro ao adicionar comentário." });
