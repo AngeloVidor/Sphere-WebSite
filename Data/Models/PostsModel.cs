@@ -25,5 +25,6 @@ namespace SphereWebsite.Data.Models
         [ValidateNever]
         public UserModel User { get; set; }
         public ICollection<CommentsModel> Comments { get; set; } = new List<CommentsModel>();
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

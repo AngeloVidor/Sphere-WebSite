@@ -91,5 +91,26 @@ namespace SphereWebsite.Presentation.Controllers.CommentsController
 
             return NotFound();
         }
+        [HttpPost]
+        public async Task<IActionResult> AddComment(int postId, string content)
+        {
+            var comment = new CommentsModel
+            {
+                PostID = postId,
+                Content = content,
+                UserID = 1, // Substitua pelo ID do usuário logado, se necessário
+                CreatedAt = DateTime.Now // Certifique-se de que CreatedAt esteja no seu modelo
+            };
+
+            if (ModelState.IsValid)
+            {
+                await _commentsService.AddComment(comment);
+                return Ok(new { success = true, message = "Comentário adicionado com sucesso!" });
+            }
+
+            return BadRequest(new { success = false, message = "Erro ao adicionar comentário." });
+        }
+
+        
     }
 }

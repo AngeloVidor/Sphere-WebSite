@@ -8,7 +8,11 @@ using SphereWebsite.Data.Interfaces.PostsInterface;
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
 using SphereWebsite.Data.Interfaces.UserInterface;
 using SphereWebsite.Data.Repositories.UserRepository;
-using SphereWebsite.Data.Repositories.PostsRepository; // Certifique-se de incluir a referência ao repositório de post
+using SphereWebsite.Data.Repositories.PostsRepository;
+using SphereWebsite.Business.Interfaces.CommentsInterface;
+using SphereWebsite.Business.Services.CommentsServices;
+using SphereWebsite.Data.Repositories.CommentsRepository;
+using SphereWebsite.Data.Interfaces.CommentsInterface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +21,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPostsService, PostsService>();
-builder.Services.AddScoped<IPostRepository, PostsRepository>(); // Altere para usar a classe concreta
+builder.Services.AddScoped<IPostRepository, PostsRepository>(); 
+builder.Services.AddScoped<ICommentsService, CommentsService>();
+builder.Services.AddScoped<ICommentsRepository, CommentRepository>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

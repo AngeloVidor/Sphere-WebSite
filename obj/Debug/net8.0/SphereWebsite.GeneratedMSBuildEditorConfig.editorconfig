@@ -18,8 +18,8 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Sphere\SphereWebsite
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Sphere/SphereWebsite/Views/Comments/Comments.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudHNcQ29tbWVudHMuY3NodG1s
+[C:/Sphere/SphereWebsite/Views/Comments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Sphere/SphereWebsite/Views/Home/Index.cshtml]

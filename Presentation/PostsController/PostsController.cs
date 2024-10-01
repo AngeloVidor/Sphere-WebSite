@@ -1,19 +1,24 @@
 using System.Collections.Generic;
-using System.Security.Claims; 
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SphereWebsite.Business.Interfaces.CommentsInterface;
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
 using SphereWebsite.Data.Models;
+using SphereWebsite.Data.Models.PostsWithComments;
 
 namespace SphereWebsite.Controllers
 {
     public class PostsController : Controller
     {
         private readonly IPostsService _postsService;
+        private readonly ICommentsService _commentsService;
 
-        public PostsController(IPostsService postsService)
+        public PostsController(IPostsService postsService, ICommentsService commentsService)
         {
             _postsService = postsService;
+            _commentsService = commentsService;
         }
 
         [HttpGet("GetAll")]
@@ -31,7 +36,16 @@ namespace SphereWebsite.Controllers
             {
                 return NotFound();
             }
-            return View(post);
+
+            var comments = await _commentsService.GetCommentByPostId(id);
+
+            var viewModel = new PostsWithCommentsViewModel
+            {
+                Post = post,
+                Comments = comments.ToList()
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet("Create")]

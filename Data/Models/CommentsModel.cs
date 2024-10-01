@@ -14,11 +14,14 @@ namespace SphereWebsite.Data.Models
 
         [Required]
         public string Content { get; set; }
+
         [Required]
         public int UserID { get; set; }
         public UserModel User { get; set; }
+
         [Required]
-        public int PostID { get; set; } 
+        public int PostID { get; set; }
+
         [ForeignKey("PostID")]
         public PostsModel Post { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

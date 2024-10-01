@@ -1,0 +1,38 @@
+@model SphereWebsite.Data.Models.PostsWithComments.PostsWithCommentsViewModel
+
+<div class="post-details">
+    <h1>@Model.Post.Title</h1>
+    <p>@Model.Post.Description</p>
+
+  
+
+    <hr />
+
+    <h3>Comentários</h3>
+    @if (Model.Comments != null && Model.Comments.Any())
+    {
+        <ul class="comments-list">
+            @foreach (var comment in Model.Comments)
+            {
+                <li class="comment">
+                    <p>@comment.Content</p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Não há comentários para este post.</p>
+    }
+
+    <hr />
+
+    <h4>Adicionar Comentário</h4>
+    <form method="post" asp-action="AddComment" asp-controller="Comments" asp-route-postId="@Model.Post.PostID">
+        <div class="form-group">
+            <label for="content">Comentário:</label>
+            <textarea id="content" name="content" class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>

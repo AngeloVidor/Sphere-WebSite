@@ -1,1 +1,171 @@
-<h1>Hello World!</h1>
+<div class="post-details">
+    <h1 class="post-title">@Model.Post.Title</h1>
+    <p class="post-description">@Model.Post.Description</p>
+
+    <div class="post-meta">
+        <small>Publicado por <strong>@Model.Post.User.NickName</strong> em @Model.Post.CreatedAt.ToString("dd/MM/yyyy")</small>
+    </div>
+
+    <hr class="divider" />
+
+    <h3 class="comments-title">Comentários</h3>
+    <ul id="comments-list" class="comments-list">
+        @foreach (var comment in Model.Comments)
+        {
+            <li class="comment">
+                <p>@comment.Content</p>
+                <small class="comment-meta">Comentado por <strong>@comment.User.NickName</strong> em @comment.CreatedAt.ToString("dd/MM/yyyy")</small>
+            </li>
+        }
+    </ul>
+
+    <hr class="divider" />
+
+    <h4 class="add-comment-title">Adicionar Comentário</h4>
+    <form id="commentForm" class="comment-form">
+        <div class="form-group">
+            <label for="content">Comentário:</label>
+            <textarea id="content" name="content" class="form-control" rows="3" placeholder="Escreva seu comentário aqui..."></textarea>
+        </div>
+        <input type="hidden" id="postId" value="@Model.Post.PostID" />
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+
+    <div id="commentSuccessMessage" class="success-message" style="display:none;">Comentário adicionado com sucesso!</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#commentForm').submit(function(event) {
+            event.preventDefault(); 
+
+            var postId = $('#postId').val();
+            var content = $('#content').val();
+
+            $.ajax({
+                url: '/Comments/AddComment', 
+                type: 'POST',
+                data: { postId: postId, content: content },
+                success: function(response) {
+                    $('#comments-list').append('<li class="comment"><p>' + content + '</p><small class="comment-meta">Comentado por você agora</small></li>');
+                    $('#content').val(''); 
+                    $('#commentSuccessMessage').show().delay(2000).fadeOut();
+                },
+                error: function() {
+                    alert('Erro ao adicionar comentário. Tente novamente.');
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .post-details {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #444;
+        border-radius: 8px;
+        background-color: #1e1e1e;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .post-title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    .post-description {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        color: #b0b0b0;
+    }
+
+    .post-meta {
+        font-size: 0.9rem;
+        color: #aaa;
+    }
+
+    .divider {
+        border: 1px solid #444;
+        margin: 20px 0;
+    }
+
+    .comments-title, .add-comment-title {
+        margin: 20px 0 10px;
+        color: #ffffff;
+    }
+
+    .comments-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .comment {
+        background-color: #2a2a2a;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .comment-meta {
+        font-size: 0.8rem;
+        color: #bbb;
+    }
+
+    .comment-form {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #444;
+        background-color: #333;
+        color: #e0e0e0;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+    }
+
+    .form-control:focus {
+        background-color: #444;
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .success-message {
+        margin-top: 10px;
+        color: #76c7c0;
+        font-weight: bold;
+    }
+</style>
