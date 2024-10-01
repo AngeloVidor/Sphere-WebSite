@@ -23,9 +23,7 @@
                     <p class="card-text text-muted" style="max-height: 100px; overflow: hidden;">@post.Description</p>
                 </div>
                 <div class="card-footer bg-dark d-flex justify-content-between align-items-center">
-                    <a asp-action="Comments" asp-route-id="@post.PostID" class="btn btn-secondary btn-sm rounded-pill shadow" title="View Comments">
-                        <i class="fas fa-comments"></i> Comments
-                    </a>
+                    <a href="@Url.Action("Index", "Comments", new { postId = Model.PostID })" class="btn btn-primary">Comments</a>
                     <div class="d-flex">
                         <a asp-action="Details" asp-route-id="@post.PostID" class="btn btn-info btn-sm rounded-pill shadow me-2" title="View Details">
                             <i class="fas fa-eye"></i> See More!

@@ -24,5 +24,6 @@ namespace SphereWebsite.Data.Models
 
         [ValidateNever]
         public UserModel User { get; set; }
+        public ICollection<CommentsModel> Comments { get; set; } = new List<CommentsModel>();
     }
 }
