@@ -3,7 +3,7 @@
 <h2 class="my-4 text-center text-light display-4">Create Post</h2>
 
 <div class="container my-5">
-    <form asp-action="Create" method="post" class="bg-dark p-5 rounded-3 shadow-lg">
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="bg-dark p-5 rounded-3 shadow-lg">
         <div class="mb-4">
             <label asp-for="Title" class="form-label text-light fs-5">Title</label>
             <input asp-for="Title" class="form-control bg-gradient-light text-dark shadow-sm border-0" placeholder="Enter the title here" required />
@@ -14,6 +14,12 @@
             <label asp-for="Description" class="form-label text-light fs-5">Description</label>
             <textarea asp-for="Description" class="form-control bg-gradient-light text-dark shadow-sm border-0" rows="5" placeholder="Write your post description here..." required></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label text-light fs-5" for="image">Upload Image</label>
+            <input type="file" name="image" id="image" class="form-control bg-gradient-light text-dark shadow-sm border-0" accept="image/*" />
+            <span class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-gradient btn-lg w-100 shadow-lg">Create</button>

@@ -143,3 +143,5 @@ C:\Sphere\SphereWebsite\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dl
 C:\Sphere\SphereWebsite\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Sphere\SphereWebsite\obj\Debug\net8.0\SphereWebsite.sourcelink.json
 C:\Sphere\SphereWebsite\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Sphere\SphereWebsite\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Sphere\SphereWebsite\bin\Debug\net8.0\AWSSDK.S3.dll

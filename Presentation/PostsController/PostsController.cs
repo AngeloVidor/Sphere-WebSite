@@ -56,7 +56,7 @@ namespace SphereWebsite.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostsModel post)
+        public async Task<IActionResult> Create(PostsModel post, IFormFile? image)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             post.UserId = int.TryParse(userId, out var id) ? id : 0;
@@ -72,7 +72,7 @@ namespace SphereWebsite.Controllers
 
             if (ModelState.IsValid)
             {
-                await _postsService.CreatePost(post);
+                await _postsService.CreatePost(post, image);
                 return RedirectToAction(nameof(Index));
             }
 

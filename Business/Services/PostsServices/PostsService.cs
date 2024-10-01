@@ -1,7 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using SphereWebsite.Business.Interfaces;
+using SphereWebsite.Business.Interfaces.S3Interface;
 using SphereWebsite.Data.Interfaces.PostsInterface;
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
 using SphereWebsite.Data.Models;
@@ -11,13 +12,22 @@ namespace SphereWebsite.Business.Services.PostsServices
     public class PostsService : IPostsService
     {
         private readonly IPostRepository _postRepository;
-        public PostsService(IPostRepository postRepository)
+        private readonly IS3Service _s3Service;
+
+        public PostsService(IPostRepository postRepository, IS3Service s3Service)
         {
             _postRepository = postRepository;
+            _s3Service = s3Service;
         }
 
-        public async Task<PostsModel> CreatePost(PostsModel post)
+        public async Task<PostsModel> CreatePost(PostsModel post, IFormFile? image = null)
         {
+            if (image != null)
+            {
+                var imageUrl = await _s3Service.UploadFileAsync(image);
+                post.ImageUrl = imageUrl;
+            }
+
             return await _postRepository.CreatePost(post);
         }
 

@@ -6,7 +6,7 @@ namespace SphereWebsite.Data.Interfaces.PostsServiceInterface
 {
     public interface IPostsService
     {
-        Task<PostsModel> CreatePost(PostsModel post);
+        Task<PostsModel> CreatePost(PostsModel post, IFormFile? image = null); 
         Task<PostsModel> GetPostById(int postId);
         Task<IEnumerable<PostsModel>> GetAllPosts();
         Task<PostsModel> UpdatePost(PostsModel post);
