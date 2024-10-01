@@ -15,6 +15,10 @@
         <div class="mb-4">
             <div class="card shadow-lg border-0 rounded" style="background-color: #2c2f33;">
                 <div class="card-body">
+                    @if (post.User != null)
+                    {
+                        <p class="text-light"><strong>Posted by:</strong> @post.User.NickName</p>
+                    }
                     <h5 class="card-title text-light">@post.Title</h5>
                     <p class="card-text text-muted" style="max-height: 100px; overflow: hidden;">@post.Description</p>
                 </div>
@@ -24,7 +28,7 @@
                     </a>
                     <div class="d-flex">
                         <a asp-action="Details" asp-route-id="@post.PostID" class="btn btn-info btn-sm rounded-pill shadow me-2" title="View Details">
-                            <i class="fas fa-eye"></i> Details
+                            <i class="fas fa-eye"></i> See More!
                         </a>
                         @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == post.UserId.ToString())
                         {
@@ -43,67 +47,3 @@
 </div>
 
 <a asp-action="Index" class="btn btn-link text-light">Back to Home</a>
-
-<style>
-    body {
-        background-color: #23272a; 
-    }
-    .btn-primary {
-        background-color: #4a90e2;
-        border-color: #4a90e2;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-    .btn-primary:hover {
-        background-color: #3f80c6; 
-        transform: translateY(-2px);
-    }
-    .btn-info {
-        background-color: #7289da;
-        border-color: #7289da;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-    .btn-info:hover {
-        background-color: #5b6eae; 
-        transform: translateY(-2px);
-    }
-    .btn-secondary {
-        background-color: #99aab5;
-        border-color: #99aab5;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-    .btn-secondary:hover {
-        background-color: #7b8b92; 
-        transform: translateY(-2px);
-    }
-    .btn-warning {
-        background-color: #f39c12;
-        border-color: #e67e22;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-    .btn-warning:hover {
-        background-color: #d68f12; 
-        transform: translateY(-2px);
-    }
-    .btn-danger {
-        background-color: #e74c3c; 
-        border-color: #c0392b;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-    .btn-danger:hover {
-        background-color: #c0392b; 
-        transform: translateY(-2px);
-    }
-    .text-light {
-        color: #ffffff; 
-    }
-    .text-muted {
-        color: #b9bbbe; 
-    }
-    .card {
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-</style>
