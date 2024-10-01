@@ -2,6 +2,11 @@
     <h1>@Model.Post.Title</h1>
     <p>@Model.Post.Description</p>
 
+    @if (!string.IsNullOrEmpty(Model.Post.ImageUrl))
+    {
+        <img src="@Model.Post.ImageUrl" alt="@Model.Post.Title" class="img-fluid rounded" style="max-height: 400px; width: auto; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" />
+    }
+
     <div class="post-meta">
         <small>Published by @Model.Post.User.NickName on @Model.Post.CreatedAt.ToString("dd/MM/yyyy")</small>
     </div>
@@ -43,6 +48,21 @@
     }
 
     <div id="commentSuccessMessage" style="display:none;">Comment added successfully!</div>
+</div>
+
+<!-- Modal for Image View -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">@Model.Post.Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="@Model.Post.ImageUrl" alt="@Model.Post.Title" class="img-fluid" />
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

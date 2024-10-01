@@ -22,9 +22,11 @@
                     <h5 class="card-title text-light">@post.Title</h5>
                     <p class="card-text text-muted" style="max-height: 100px; overflow: hidden;">@post.Description</p>
 
-                    @if (!string.IsNullOrEmpty(post.ImageUrl)) // Verifica se a URL da imagem não é nula ou vazia
+                    @if (!string.IsNullOrEmpty(post.ImageUrl)) 
                     {
-                        <img src="@post.ImageUrl" alt="@post.Title" class="img-fluid rounded" style="max-height: 200px; width: auto;" />
+                        <img src="@post.ImageUrl" alt="@post.Title" class="img-fluid rounded" style="max-height: 200px; width: auto;"
+                             data-bs-toggle="modal" data-bs-target="#imageModal" 
+                             onclick="showImageModal('@post.ImageUrl')" />
                     }
                 </div>
                 <div class="card-footer bg-dark d-flex justify-content-between align-items-center">
@@ -58,3 +60,28 @@
 </div>
 
 <a asp-action="Index" class="btn btn-link text-light">Back to Home</a>
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Preview" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showImageModal(imageUrl) {
+        var modalImage = document.getElementById('modalImage');
+        modalImage.src = imageUrl;
+    }
+</script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>

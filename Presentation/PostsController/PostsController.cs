@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SphereWebsite.Business.Interfaces.CommentsInterface;
-using SphereWebsite.Business.Interfaces.S3Interface; // Adicione a referência para o S3
+using SphereWebsite.Business.Interfaces.S3Interface; 
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
 using SphereWebsite.Data.Interfaces.UserInterface;
 using SphereWebsite.Data.Models;
@@ -70,36 +70,29 @@ namespace SphereWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PostsModel post, IFormFile? image)
         {
-            // Obtém o UserId do usuário autenticado
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             post.UserId = int.TryParse(userId, out var id) ? id : 0;
 
-            // Log para verificar o UserId obtido
             Console.WriteLine($"User ID Obtido: {userId}");
             Console.WriteLine($"User ID Convertido: {post.UserId}");
 
-            // Verifica se o UserId é válido
             if (post.UserId == 0)
             {
                 ModelState.AddModelError("UserId", "User ID is required and must be valid.");
                 Console.WriteLine("Erro: User ID não é válido.");
             }
 
-            // Verifica se o ModelState é válido
             if (ModelState.IsValid)
             {
-                // Tenta criar o post
                 await _postsService.CreatePost(post, image);
                 return RedirectToAction(nameof(Index));
             }
 
-            // Log de erros de validação
             foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
             {
                 Console.WriteLine($"Erro: {error.ErrorMessage}");
             }
 
-            // Retorna a view com o post e os erros
             return View(post);
         }
 
