@@ -45,8 +45,8 @@ namespace SphereWebsite.Data.Repositories.CommentsRepository
         public async Task<IEnumerable<CommentsModel>> GetCommentsByPostId(int postId)
         {
             return await _context
-                .Comments.Where(c => c.PostID == postId)
-                .Include(c => c.User)
+                .Comments.Include(c => c.User) 
+                .Where(c => c.PostID == postId) 
                 .ToListAsync();
         }
 

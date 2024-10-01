@@ -75,7 +75,7 @@ namespace SphereWebsite.Presentation.Controllers.CommentsController
                 return NotFound();
             }
 
-            return View(comment); 
+            return View(comment);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -91,6 +91,7 @@ namespace SphereWebsite.Presentation.Controllers.CommentsController
 
             return NotFound();
         }
+
         [HttpPost]
         public async Task<IActionResult> AddComment(int postId, string content)
         {
@@ -98,8 +99,8 @@ namespace SphereWebsite.Presentation.Controllers.CommentsController
             {
                 PostID = postId,
                 Content = content,
-                UserID = 1, // Substitua pelo ID do usuário logado, se necessário
-                CreatedAt = DateTime.Now // Certifique-se de que CreatedAt esteja no seu modelo
+                UserID = 1,
+                CreatedAt = DateTime.Now
             };
 
             if (ModelState.IsValid)
@@ -111,6 +112,17 @@ namespace SphereWebsite.Presentation.Controllers.CommentsController
             return BadRequest(new { success = false, message = "Erro ao adicionar comentário." });
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var comment = await _commentsService.GetCommentById(commentId);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            await _commentsService.DeleteComment(commentId);
+            return Ok(new { success = true, message = "Comentário excluído com sucesso!" });
+        }
     }
 }

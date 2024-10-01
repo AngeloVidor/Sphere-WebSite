@@ -19,7 +19,7 @@ namespace SphereWebsite.Business.Services.CommentsServices
 
         public async Task<CommentsModel> AddComment(CommentsModel comments)
         {
-            if (comments == null) 
+            if (comments == null)
             {
                 throw new ArgumentNullException(nameof(comments), "Comment cannot be null.");
             }
