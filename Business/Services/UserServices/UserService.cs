@@ -97,5 +97,10 @@ namespace SphereWebsite.Business.Services
         {
             await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
+
+        public async Task<UserModel> GetUserById(int userId)
+        {
+            return await _userRepository.GetUserById(userId);
+        }
     }
 }

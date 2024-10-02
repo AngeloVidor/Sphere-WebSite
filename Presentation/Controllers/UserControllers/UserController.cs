@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SphereWebsite.Business.Interfaces.UserInterface;
@@ -80,6 +81,22 @@ namespace SphereWebsite.UI.Controllers
         {
             await _userService.Logout(HttpContext);
             return RedirectToAction("Login", "Users");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if(userId == 0)
+            {
+                return RedirectToAction("Login");
+            }
+            var user = await _userService.GetUserById(userId);
+            if(user == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
+            return View(user);
         }
     }
 }

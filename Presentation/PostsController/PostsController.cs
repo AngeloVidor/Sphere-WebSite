@@ -20,12 +20,8 @@ namespace SphereWebsite.Controllers
         private readonly IUserRepository _userRepository;
 
         public PostsController(
-            IPostsService postsService,
-            ICommentsService commentsService,
-            IUserRepository userRepository,
-            IS3Service s3Service
-            
-        )
+            IPostsService postsService, ICommentsService commentsService, IUserRepository userRepository,
+            IS3Service s3Service)
         {
             _postsService = postsService;
             _commentsService = commentsService;

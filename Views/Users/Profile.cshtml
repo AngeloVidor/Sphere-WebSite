@@ -1,0 +1,10 @@
+@model SphereWebsite.Data.Models.UserModel
+
+<h2>User Profile</h2>
+
+<div>
+    <h4>Name: @Model.NickName</h4>
+    <p>Email: @Model.Email</p>
+</div>
+
+<a href="@Url.Action("Logout", "Users")">Logout</a>
