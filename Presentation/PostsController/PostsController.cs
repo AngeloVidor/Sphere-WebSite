@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SphereWebsite.Business.Interfaces.CommentsInterface;
-using SphereWebsite.Business.Interfaces.S3Interface; 
+using SphereWebsite.Business.Interfaces.S3Interface;
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
 using SphereWebsite.Data.Interfaces.UserInterface;
 using SphereWebsite.Data.Models;
@@ -20,8 +20,11 @@ namespace SphereWebsite.Controllers
         private readonly IUserRepository _userRepository;
 
         public PostsController(
-            IPostsService postsService, ICommentsService commentsService, IUserRepository userRepository,
-            IS3Service s3Service)
+            IPostsService postsService,
+            ICommentsService commentsService,
+            IUserRepository userRepository,
+            IS3Service s3Service
+        )
         {
             _postsService = postsService;
             _commentsService = commentsService;
@@ -33,7 +36,15 @@ namespace SphereWebsite.Controllers
         public async Task<IActionResult> Index()
         {
             var posts = await _postsService.GetAllPosts();
-            return View(posts);
+            var postsWithUsers = new List<PostWithUserModel>();
+
+            foreach (var post in posts)
+            {
+                var user = await _userRepository.GetUserById(post.UserId);
+                postsWithUsers.Add(new PostWithUserModel { Post = post, User = user });
+            }
+
+            return View(postsWithUsers);
         }
 
         [HttpGet("Details")]
@@ -107,7 +118,9 @@ namespace SphereWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PostsModel post, IFormFile? image)
         {
-            Console.WriteLine($"Edit called with ID: {id}, Title: {post.Title}, Description: {post.Description}, UserId: {post.UserId}");
+            Console.WriteLine(
+                $"Edit called with ID: {id}, Title: {post.Title}, Description: {post.Description}, UserId: {post.UserId}"
+            );
             var existingPost = await _postsService.GetPostById(id);
             if (existingPost == null)
             {
@@ -120,7 +133,7 @@ namespace SphereWebsite.Controllers
                 Console.WriteLine($"Imagem recebida: {image.FileName}, Tamanho: {image.Length}");
 
                 var imageUrl = await _s3Service.UploadFileAsync(image);
-                existingPost.ImageUrl = imageUrl; 
+                existingPost.ImageUrl = imageUrl;
             }
             else
             {
