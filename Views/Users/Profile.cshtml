@@ -1,10 +1,23 @@
 @model SphereWebsite.Data.Models.UserModel
 
-<h2>User Profile</h2>
+<h2>@Model.Name Profile</h2>
 
 <div>
     <h4>Name: @Model.NickName</h4>
     <p>Email: @Model.Email</p>
 </div>
+
+@if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+{
+    <div>
+        <img src="@Model.ProfileImageUrl" alt="Profile Image" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;" />
+    </div>
+}
+else
+{
+    <div>
+        <p>No profile image available.</p>
+    </div>
+}
 
 <a href="@Url.Action("Logout", "Users")">Logout</a>

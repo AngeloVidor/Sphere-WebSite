@@ -12,13 +12,20 @@
                     <h3>Register</h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="Register" method="post" class="needs-validation" novalidate>
+                    <form asp-action="Register" method="post" enctype="multipart/form-data" class="needs-validation"
+                        novalidate>
                         <div class="mb-3">
                             <label asp-for="NickName" class="form-label text-light"></label>
                             <input asp-for="NickName" class="form-control bg-secondary text-light" required />
                             <span asp-validation-for="NickName" class="text-danger"></span>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label text-light">Profile Pic</label>
+                            <input type="file" class="form-control bg-secondary text-light" asp-for="ProfileImage" required />
+                            <span asp-validation-for="ProfileImageUrl" class="text-danger"></span>
+                        </div>
+                        
                         <div class="mb-3">
                             <label asp-for="Name" class="form-label text-light"></label>
                             <input asp-for="Name" class="form-control bg-secondary text-light" required />
@@ -39,7 +46,8 @@
 
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label text-light"></label>
-                            <input asp-for="Password" class="form-control bg-secondary text-light" type="password" required />
+                            <input asp-for="Password" class="form-control bg-secondary text-light" type="password"
+                                required />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
@@ -61,24 +69,30 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 
 <style>
     body {
-        background-color: #23272a; 
+        background-color: #23272a;
     }
+
     .btn-info {
         background-color: #7289da;
         border-color: #7289da;
     }
+
     .btn-info:hover {
-        background-color: #5b6eae; 
+        background-color: #5b6eae;
     }
+
     .text-light {
-        color: #ffffff; 
+        color: #ffffff;
     }
+
     .bg-secondary {
-        background-color: #343a40; 
+        background-color: #343a40;
     }
 </style>

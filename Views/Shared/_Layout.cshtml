@@ -10,49 +10,62 @@
     <link rel="stylesheet" href="~/SphereWebsite.styles.css" asp-append-version="true" />
     <style>
         body {
-            background-color: #23272a; 
-            color: #ffffff; 
+            background-color: #23272a;
+            color: #ffffff;
         }
+
         header {
             background-color: #2c2f33;
-            border-bottom: 2px solid #7289da; 
+            border-bottom: 2px solid #7289da;
         }
+
         .navbar-light .navbar-nav .nav-link {
-            color: #ffffff; 
+            color: #ffffff;
         }
+
         .navbar-light .navbar-nav .nav-link:hover {
-            color: #7289da; 
-        }
-        .navbar-light .navbar-nav .nav-link.active {
-            color: #ffffff; 
-        }
-        .navbar-light .navbar-brand {
-            color: #ffffff; 
-        }
-        .btn-outline-primary {
-            border-color: #7289da; 
             color: #7289da;
         }
+
+        .navbar-light .navbar-nav .nav-link.active {
+            color: #ffffff;
+        }
+
+        .navbar-light .navbar-brand {
+            color: #ffffff;
+        }
+
+        .btn-outline-primary {
+            border-color: #7289da;
+            color: #7289da;
+        }
+
         .btn-outline-primary:hover {
-            background-color: #7289da; 
-            color: #ffffff; 
+            background-color: #7289da;
+            color: #ffffff;
         }
+
         .dropdown-menu {
-            background-color: #2c2f33; 
+            background-color: #2c2f33;
         }
+
         .dropdown-item {
             color: #ffffff;
         }
+
         .dropdown-item:hover {
             background-color: #7289da;
         }
+
         .footer {
-            background-color: #2c2f33; 
-            color: #b9bbbe; 
+            background-color: #2c2f33;
+            color: #b9bbbe;
         }
+
         .footer a {
-            color: #7289da; 
+            color: #7289da;
         }
+
         .footer a:hover {
             color: #ffffff;
         }
@@ -82,9 +95,18 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user-circle"></i> @User.Identity.Name
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                                    {
+                                        <img src="@Model.ProfileImageUrl" alt="Profile Image" class="rounded-circle"
+                                            style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;" />
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-user-circle" style="font-size: 24px; margin-right: 10px;"></i>
+                                    }
+                                    <span>@User.Identity.Name</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Users"
@@ -112,15 +134,14 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Users"
-                                    asp-action="Register">Register</a>
+                                <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Register">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Users"
-                                    asp-action="Login">Login</a>
+                                <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Login">Login</a>
                             </li>
                         }
                     </ul>
+
                 </div>
             </div>
         </nav>

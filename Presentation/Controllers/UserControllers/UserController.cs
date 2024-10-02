@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SphereWebsite.Business.Interfaces.S3Interface;
 using SphereWebsite.Business.Interfaces.UserInterface;
 using SphereWebsite.Data.Models;
 
@@ -9,10 +10,12 @@ namespace SphereWebsite.UI.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IS3Service _s3Service;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IS3Service s3Service)
         {
             _userService = userService;
+            _s3Service = s3Service;
         }
 
         [HttpGet]
@@ -22,26 +25,32 @@ namespace SphereWebsite.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(UserModel user)
+        public async Task<IActionResult> Register(UserModel user, IFormFile ProfileImage)
         {
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine($"Error: {error.ErrorMessage}");
-                }
                 return View(user);
             }
 
             try
             {
+                if (ProfileImage != null && ProfileImage.Length > 0)
+                {
+                    var profileImageUrl = await _s3Service.UploadFileAsync(ProfileImage);
+                    user.ProfileImageUrl = profileImageUrl;
+                }
+
                 var registeredUser = await _userService.RegisterUser(user);
+
                 return RedirectToAction("Login");
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = ex.Message;
-                return View(user);
+                ModelState.AddModelError(
+                    string.Empty,
+                    "Ocorreu um erro ao registrar o usuário: " + ex.Message
+                );
+                return View(user); 
             }
         }
 
@@ -87,12 +96,12 @@ namespace SphereWebsite.UI.Controllers
         public async Task<IActionResult> Profile()
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            if(userId == 0)
+            if (userId == 0)
             {
                 return RedirectToAction("Login");
             }
             var user = await _userService.GetUserById(userId);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound("Usuário não encontrado.");
             }
