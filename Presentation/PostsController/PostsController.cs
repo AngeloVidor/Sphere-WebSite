@@ -38,7 +38,7 @@ namespace SphereWebsite.Controllers
             var posts = await _postsService.GetAllPosts();
             var postsWithUsers = new List<PostWithUserModel>();
 
-            foreach (var post in posts.OrderByDescending(p =>  p.CreatedAt))
+            foreach (var post in posts.OrderByDescending(p => p.CreatedAt))
             {
                 var user = await _userRepository.GetUserById(post.UserId);
                 postsWithUsers.Add(new PostWithUserModel { Post = post, User = user });
@@ -75,7 +75,11 @@ namespace SphereWebsite.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostsModel post, IFormFile? image)
+        public async Task<IActionResult> Create(
+            PostsModel post,
+            IFormFile? image,
+            string[] selectedTags
+        )
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             post.UserId = int.TryParse(userId, out var id) ? id : 0;
@@ -89,9 +93,34 @@ namespace SphereWebsite.Controllers
                 Console.WriteLine("Erro: User ID não é válido.");
             }
 
+            if (selectedTags.Length > 3)
+            {
+                ModelState.AddModelError("SelectedTags", "Você pode selecionar no máximo 3 tags.");
+                Console.WriteLine("Erro: Mais de 3 tags selecionadas.");
+            }
+
+            if (!selectedTags.Any())
+            {
+                ModelState.AddModelError(
+                    "SelectedTags",
+                    "Você deve selecionar pelo menos uma tag."
+                );
+                Console.WriteLine("Erro: Nenhuma tag selecionada.");
+            }
+            else
+            {
+                post.SelectedTags = selectedTags.ToList();
+            }
+
             if (ModelState.IsValid)
             {
-                await _postsService.CreatePost(post, image);
+                if (image != null && image.Length > 0)
+                {
+                    var imageUrl = await _s3Service.UploadFileAsync(image);
+                    post.ImageUrl = imageUrl;
+                }
+
+                await _postsService.CreatePost(post);
                 return RedirectToAction(nameof(Index));
             }
 

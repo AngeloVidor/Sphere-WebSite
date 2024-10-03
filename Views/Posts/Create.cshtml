@@ -22,6 +22,34 @@
             <span class="text-danger"></span>
         </div>
 
+        <div class="mb-4">
+            <label class="form-label text-light fs-5">Choose up to 3 tags:</label>
+            <div class="d-flex flex-wrap gap-2">
+                @{
+                    var tags = new List<(string, string)> 
+                    { 
+                        ("technology", "#6a11cb"), 
+                        ("art", "#f39c12"), 
+                        ("life", "#e74c3c"), 
+                        ("music", "#3498db"), 
+                        ("fun", "#2ecc71"), 
+                        ("memes", "#e91e63") 
+                    };
+                }
+
+                @foreach (var (tag, color) in tags)
+                {
+                    <div class="form-check form-check-inline tag-checkbox">
+                        <input class="form-check-input" type="checkbox" name="selectedTags" value="@tag" id="tag_@tag" />
+                        <label class="form-check-label text-light px-3 py-1 rounded" for="tag_@tag" style="background-color: @color;">
+                            @tag.First().ToString().ToUpper()@tag.Substring(1)
+                        </label>
+                    </div>
+                }
+            </div>
+            <span asp-validation-for="SelectedTags" class="text-danger"></span>
+        </div>
+
         <button type="submit" class="btn btn-gradient btn-lg w-100 shadow-lg">Create</button>
     </form>
 
@@ -35,7 +63,7 @@
         background-color: #1c1e22;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
+
     .container {
         max-width: 600px;
         margin: auto;
@@ -96,8 +124,23 @@
     .shadow-lg {
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
-    
+
     .rounded-3 {
         border-radius: 20px;
+    }
+
+    .tag-checkbox label {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .tag-checkbox input[type="checkbox"] {
+        display: none;
+    }
+
+    .tag-checkbox input[type="checkbox"]:checked + label {
+        filter: brightness(1.1);
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
 </style>

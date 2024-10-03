@@ -27,5 +27,11 @@ namespace SphereWebsite.Data.Models
         public ICollection<CommentsModel> Comments { get; set; } = new List<CommentsModel>();
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? ImageUrl { get; set; }
+        public List<string> SelectedTags { get; set; } = new List<string>();
+        public string Tags
+        {
+            get => string.Join(",", SelectedTags);
+            set => SelectedTags = string.IsNullOrEmpty(value) ? new List<string>() : value.Split(',').ToList();
+        }
     }
 }
