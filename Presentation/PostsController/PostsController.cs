@@ -16,20 +16,17 @@ namespace SphereWebsite.Controllers
     {
         private readonly IPostsService _postsService;
         private readonly ICommentsService _commentsService;
-        private readonly IS3Service _s3Service;
         private readonly IUserRepository _userRepository;
 
         public PostsController(
             IPostsService postsService,
             ICommentsService commentsService,
-            IUserRepository userRepository,
-            IS3Service s3Service
+            IUserRepository userRepository
         )
         {
             _postsService = postsService;
             _commentsService = commentsService;
             _userRepository = userRepository;
-            _s3Service = s3Service;
         }
 
         [HttpGet("GetAll")]
@@ -57,7 +54,6 @@ namespace SphereWebsite.Controllers
             }
 
             var comments = await _commentsService.GetCommentByPostId(id);
-
             var viewModel = new PostsWithCommentsViewModel
             {
                 Post = post,
@@ -75,61 +71,21 @@ namespace SphereWebsite.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            PostsModel post,
-            IFormFile? image,
-            string[] selectedTags
-        )
+        public async Task<IActionResult> Create(PostsModel post, IFormFile? image, string[] selectedTags)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             post.UserId = int.TryParse(userId, out var id) ? id : 0;
 
-            Console.WriteLine($"User ID Obtido: {userId}");
-            Console.WriteLine($"User ID Convertido: {post.UserId}");
-
-            if (post.UserId == 0)
+            try
             {
-                ModelState.AddModelError("UserId", "User ID is required and must be valid.");
-                Console.WriteLine("Erro: User ID não é válido.");
-            }
-
-            if (selectedTags.Length > 3)
-            {
-                ModelState.AddModelError("SelectedTags", "Você pode selecionar no máximo 3 tags.");
-                Console.WriteLine("Erro: Mais de 3 tags selecionadas.");
-            }
-
-            if (!selectedTags.Any())
-            {
-                ModelState.AddModelError(
-                    "SelectedTags",
-                    "Você deve selecionar pelo menos uma tag."
-                );
-                Console.WriteLine("Erro: Nenhuma tag selecionada.");
-            }
-            else
-            {
-                post.SelectedTags = selectedTags.ToList();
-            }
-
-            if (ModelState.IsValid)
-            {
-                if (image != null && image.Length > 0)
-                {
-                    var imageUrl = await _s3Service.UploadFileAsync(image);
-                    post.ImageUrl = imageUrl;
-                }
-
-                await _postsService.CreatePost(post);
+                var createdPost = await _postsService.CreatePost(post, image, selectedTags);
                 return RedirectToAction(nameof(Index));
             }
-
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            catch (ArgumentException ex)
             {
-                Console.WriteLine($"Erro: {error.ErrorMessage}");
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(post);
             }
-
-            return View(post);
         }
 
         [HttpGet("Edit/{id}")]
@@ -147,36 +103,20 @@ namespace SphereWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PostsModel post, IFormFile? image)
         {
-            Console.WriteLine(
-                $"Edit called with ID: {id}, Title: {post.Title}, Description: {post.Description}, UserId: {post.UserId}"
-            );
-            var existingPost = await _postsService.GetPostById(id);
-            if (existingPost == null)
+            try
             {
-                Console.WriteLine("Post not found.");
+                await _postsService.UpdatePost(post, image);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (KeyNotFoundException)
+            {
                 return NotFound();
             }
-
-            if (image != null && image.Length > 0)
+            catch (ArgumentException ex)
             {
-                Console.WriteLine($"Imagem recebida: {image.FileName}, Tamanho: {image.Length}");
-
-                var imageUrl = await _s3Service.UploadFileAsync(image);
-                existingPost.ImageUrl = imageUrl;
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(post);
             }
-            else
-            {
-                Console.WriteLine("A imagem está null ou vazia.");
-            }
-
-            existingPost.Title = post.Title;
-            existingPost.Description = post.Description;
-            existingPost.UserId = post.UserId;
-
-            await _postsService.UpdatePost(existingPost);
-            Console.WriteLine("Post atualizado com sucesso.");
-
-            return RedirectToAction("Index");
         }
 
         [HttpGet("Delete/{id}")]

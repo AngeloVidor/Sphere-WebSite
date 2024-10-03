@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Sphere-WebSite\\SphereWebsite.csproj": {}
+    "C:\\Sphere-WebSite\\SphereWebsite.csproj": {}
   },
   "projects": {
-    "c:\\Sphere-WebSite\\SphereWebsite.csproj": {
+    "C:\\Sphere-WebSite\\SphereWebsite.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Sphere-WebSite\\SphereWebsite.csproj",
+        "projectUniqueName": "C:\\Sphere-WebSite\\SphereWebsite.csproj",
         "projectName": "SphereWebsite",
-        "projectPath": "c:\\Sphere-WebSite\\SphereWebsite.csproj",
+        "projectPath": "C:\\Sphere-WebSite\\SphereWebsite.csproj",
         "packagesPath": "C:\\Users\\angel\\.nuget\\packages\\",
-        "outputPath": "c:\\Sphere-WebSite\\obj\\",
+        "outputPath": "C:\\Sphere-WebSite\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\angel\\AppData\\Roaming\\NuGet\\NuGet.Config"
