@@ -38,7 +38,7 @@ namespace SphereWebsite.Controllers
             var posts = await _postsService.GetAllPosts();
             var postsWithUsers = new List<PostWithUserModel>();
 
-            foreach (var post in posts)
+            foreach (var post in posts.OrderByDescending(p =>  p.CreatedAt))
             {
                 var user = await _userRepository.GetUserById(post.UserId);
                 postsWithUsers.Add(new PostWithUserModel { Post = post, User = user });
