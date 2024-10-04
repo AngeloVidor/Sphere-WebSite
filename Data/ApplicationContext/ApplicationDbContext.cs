@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SphereWebsite.Data.Models;
+using SphereWebSite.Data.Models.Group;
 
 namespace SphereWebsite.Data.ApplicationContext
 {
@@ -15,5 +16,6 @@ namespace SphereWebsite.Data.ApplicationContext
         public DbSet<UserModel> Users { get; set; }
         public DbSet<PostsModel> Posts { get; set; }
         public DbSet<CommentsModel> Comments { get; set; }
+        public DbSet<GroupModel> Groups { get; set; }
     }
 }

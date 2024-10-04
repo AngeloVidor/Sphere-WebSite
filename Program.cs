@@ -15,6 +15,10 @@ using SphereWebsite.Data.Interfaces.UserInterface;
 using SphereWebsite.Data.Repositories.CommentsRepository;
 using SphereWebsite.Data.Repositories.PostsRepository;
 using SphereWebsite.Data.Repositories.UserRepository;
+using SphereWebSite.Business.Interfaces.GroupInterface;
+using SphereWebSite.Business.Services.GroupService;
+using SphereWebSite.Data.Interfaces.GroupRepository;
+using SphereWebSite.Data.Repositories.GroupRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +33,9 @@ builder.Services.AddScoped<ICommentsRepository, CommentRepository>();
 builder.Services.AddScoped<IS3Service, S3Service>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<S3Service>();
+builder.Services.AddScoped<IGroupService, GroupsService>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

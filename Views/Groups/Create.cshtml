@@ -1,0 +1,44 @@
+@model SphereWebSite.Data.Models.Group.GroupModel
+
+@{
+    ViewData["Title"] = "Create Group";
+}
+
+<h2>Create Group</h2>
+
+<div class="mb-3">
+    <a asp-controller="Groups" asp-action="Index" class="btn btn-secondary">Back to Groups</a>
+</div>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Group Name</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GroupImageUrl" class="form-label">Group Image</label>
+        <input asp-for="GroupImageUrl" type="file" class="form-control" />
+        <span asp-validation-for="GroupImageUrl" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Tags" class="form-label">Tags (separated by commas)</label>
+        <input asp-for="Tags" class="form-control" />
+        <span asp-validation-for="Tags" class="text-danger"></span>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Create Group</button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
