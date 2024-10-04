@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SphereWebSite.Business.Interfaces.GroupInterface;
+using SphereWebsite.Business.Interfaces.S3Interface;
 using SphereWebSite.Data.Models.Group;
 
 namespace SphereWebSite.Presentation.Controllers.GroupsController
@@ -13,11 +14,17 @@ namespace SphereWebSite.Presentation.Controllers.GroupsController
     {
         private readonly IGroupService _groupService;
         private readonly ILogger<GroupsController> _logger;
+        private readonly IS3Service _s3Service;
 
-        public GroupsController(IGroupService groupService, ILogger<GroupsController> logger)
+        public GroupsController(
+            IGroupService groupService,
+            ILogger<GroupsController> logger,
+            IS3Service s3Service
+        )
         {
             _groupService = groupService;
             _logger = logger;
+            _s3Service = s3Service;
         }
 
         [HttpGet]
@@ -35,22 +42,54 @@ namespace SphereWebSite.Presentation.Controllers.GroupsController
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(GroupModel group)
+        public async Task<IActionResult> Create(GroupModel group, IFormFile groupImage)
         {
             _logger.LogInformation("Iniciando o processo de criação do grupo.");
 
+            if (groupImage == null || groupImage.Length == 0)
+            {
+                ModelState.AddModelError("GroupImageUrl", "A imagem do grupo é obrigatória.");
+            }
+            else
+            {
+                try
+                {
+                    group.GroupImageUrl = await _s3Service.UploadFileAsync(groupImage);
+
+                    ModelState.Clear();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(
+                        ex,
+                        "Erro ao fazer upload da imagem do grupo: {@GroupModel}",
+                        group
+                    );
+                    ModelState.AddModelError(
+                        "GroupImageUrl",
+                        "Erro ao fazer upload da imagem do grupo."
+                    );
+                }
+            }
+
             if (!ModelState.IsValid)
             {
+                var errors = ModelState
+                    .SelectMany(x => x.Value.Errors.Select(e => e.ErrorMessage))
+                    .ToList();
+
                 _logger.LogWarning(
-                    "ModelState inválido ao tentar criar o grupo: {@GroupModel}",
-                    group
+                    "ModelState inválido ao tentar criar o grupo: {@GroupModel}. Erros: {@Errors}",
+                    group,
+                    errors
                 );
+
                 return View(group);
             }
 
             try
             {
-                var createdGroup = await _groupService.CreateGroup(group);
+                var createdGroup = await _groupService.CreateGroup(group, groupImage);
                 _logger.LogInformation("Grupo criado com sucesso: {@CreatedGroup}", createdGroup);
                 return RedirectToAction(nameof(Index));
             }

@@ -14,7 +14,8 @@ namespace SphereWebSite.Data.Models.Group
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public string? GroupImageUrl { get; set; }
+        [Required]
+        public string GroupImageUrl { get; set; }
         public List<string> Tags { get; set; } = new List<string>();
         public ICollection<UserModel> Users { get; set; } = new List<UserModel>();
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

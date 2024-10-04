@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SphereWebSite.Business.Interfaces.GroupInterface;
+using SphereWebsite.Business.Interfaces.S3Interface;
 using SphereWebSite.Data.Interfaces.GroupRepository;
 using SphereWebSite.Data.Models.Group;
 
@@ -11,22 +12,28 @@ namespace SphereWebSite.Business.Services.GroupService
     public class GroupsService : IGroupService
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IS3Service _s3Service;
 
-        public GroupsService(IGroupRepository groupRepository)
+        public GroupsService(IGroupRepository groupRepository, IS3Service s3Service)
         {
             _groupRepository = groupRepository;
+            _s3Service = s3Service;
         }
 
-        public async Task<GroupModel> CreateGroup(GroupModel group)
+        public async Task<GroupModel> CreateGroup(GroupModel group, IFormFile groupImage)
         {
+            if (groupImage == null || groupImage.Length == 0)
+            {
+                throw new ArgumentException("A imagem do grupo é obrigatória.");
+            }
+
+            group.GroupImageUrl = await _s3Service.UploadFileAsync(groupImage);
+
             if (string.IsNullOrEmpty(group.Name))
             {
-                throw new ArgumentException("O noem do grupo é obrigatório");
+                throw new ArgumentException("O nome do grupo é obrigatório");
             }
-            /*if (group.Users == null || group.Users.Count == 0)
-            {
-                throw new ArgumentException("O grupo deve ter ao menos um usuário");
-            }*/
+
             return await _groupRepository.CreateGroup(group);
         }
 

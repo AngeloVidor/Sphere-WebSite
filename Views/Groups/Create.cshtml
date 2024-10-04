@@ -24,10 +24,11 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="GroupImageUrl" class="form-label">Group Image</label>
-        <input asp-for="GroupImageUrl" type="file" class="form-control" />
+        <label class="form-label">Group Image</label>
+        <input type="file" name="groupImage" class="form-control" required />
         <span asp-validation-for="GroupImageUrl" class="text-danger"></span>
     </div>
+
 
     <div class="mb-3">
         <label asp-for="Tags" class="form-label">Tags (separated by commas)</label>
@@ -35,10 +36,12 @@
         <span asp-validation-for="Tags" class="text-danger"></span>
     </div>
 
-
     <button type="submit" class="btn btn-primary">Create Group</button>
 </form>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

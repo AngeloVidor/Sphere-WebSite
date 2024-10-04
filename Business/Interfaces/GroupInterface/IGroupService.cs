@@ -9,7 +9,7 @@ namespace SphereWebSite.Business.Interfaces.GroupInterface
 {
     public interface IGroupService
     {
-        Task<GroupModel> CreateGroup(GroupModel group);
+        Task<GroupModel> CreateGroup(GroupModel group, IFormFile groupImage);
         Task<GroupModel> UpdateGroup(GroupModel group);
         Task DeleteGroup(int groupId);
         Task<GroupModel> GetGroupById(int groupId);
