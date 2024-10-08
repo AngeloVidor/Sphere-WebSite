@@ -35,7 +35,8 @@
                             <p class="card-text"><small>@group.UserCount users</small></p>
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <a asp-action="Details" asp-controller="Groups" asp-route-id="@group.GroupID"
+                                    <!-- Alterado para direcionar ao GroupPostsController -->
+                                    <a asp-action="Details" asp-controller="GroupPosts" asp-route-id="@group.GroupID"
                                         class="btn btn-outline-info btn-sm">
                                         <i class="fas fa-info-circle"></i> View Group
                                     </a>

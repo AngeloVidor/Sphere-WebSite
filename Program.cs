@@ -12,10 +12,13 @@ using SphereWebsite.Data.Interfaces.CommentsInterface;
 using SphereWebsite.Data.Interfaces.PostsInterface;
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
 using SphereWebsite.Data.Interfaces.UserInterface;
+using SphereWebsite.Data.Repositories;
 using SphereWebsite.Data.Repositories.CommentsRepository;
 using SphereWebsite.Data.Repositories.PostsRepository;
 using SphereWebsite.Data.Repositories.UserRepository;
 using SphereWebSite.Business.Interfaces.GroupInterface;
+using SphereWebSite.Business.Interfaces.GroupPostsInterface;
+using SphereWebSite.Business.Services;
 using SphereWebSite.Business.Services.GroupService;
 using SphereWebSite.Data.Interfaces.GroupRepository;
 using SphereWebSite.Data.Repositories.GroupRepository;
@@ -35,6 +38,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<S3Service>();
 builder.Services.AddScoped<IGroupService, GroupsService>();
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IGroupPostsService, GroupPostsService>();
+builder.Services.AddScoped<IGroupPostsRepository, GroupPostsRepository>(); 
+
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
