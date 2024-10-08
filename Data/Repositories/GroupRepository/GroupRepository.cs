@@ -76,12 +76,23 @@ namespace SphereWebSite.Data.Repositories.GroupRepository
 
         public async Task JoinGroup(int groupId, int userId)
         {
-            var userGroup = new UserGroup
+            var group = await _context.Groups.FindAsync(groupId);
+            if (group == null)
             {
-                UserId = userId,
-                GroupId = groupId
-            };
-            _context.UserGroups.Add(userGroup);
+                throw new Exception("Grupo não encontrado.");
+            }
+
+            var userGroupExists = await _context.UserGroups.AnyAsync(ug =>
+                ug.UserId == userId && ug.GroupId == groupId
+            );
+
+            if (userGroupExists)
+            {
+                throw new Exception("O usuário já está neste grupo.");
+            }
+
+            var userGroup = new UserGroup { UserId = userId, GroupId = groupId };
+            await _context.UserGroups.AddAsync(userGroup);
             await _context.SaveChangesAsync();
         }
     }

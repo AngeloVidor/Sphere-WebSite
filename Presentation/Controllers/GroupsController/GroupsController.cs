@@ -184,6 +184,7 @@ namespace SphereWebSite.Presentation.Controllers.GroupsController
             try
             {
                 await _groupService.JoinGroup(groupId, userId);
+
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
