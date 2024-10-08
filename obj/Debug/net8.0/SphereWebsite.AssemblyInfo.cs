@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SphereWebsite")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7b357b4dd12e0b6e98f5ce8b1df7139c0cadaaa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+87d93b6f360f4bc766f9ed245b21fbd85115b0c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("SphereWebsite")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SphereWebsite")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

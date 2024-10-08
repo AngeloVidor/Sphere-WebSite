@@ -20,5 +20,6 @@ namespace SphereWebSite.Data.Models.Group
         public ICollection<UserModel> Users { get; set; } = new List<UserModel>();
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
+        public int UserCount => UserGroups?.Count ?? 0;
     }
 }

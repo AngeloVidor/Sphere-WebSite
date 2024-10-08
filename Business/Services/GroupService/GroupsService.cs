@@ -48,7 +48,12 @@ namespace SphereWebSite.Business.Services.GroupService
 
         public async Task<IEnumerable<GroupModel>> GetAllGroups()
         {
-            return await _groupRepository.GetAllGroups();
+            var groups = await _groupRepository.GetAllGroups();
+            foreach (var group in groups)
+            {
+                Console.WriteLine($"Group: {group.Name}, UserCount: {group.UserCount}");
+            }
+            return groups;
         }
 
         public async Task<GroupModel> GetGroupById(int groupId)

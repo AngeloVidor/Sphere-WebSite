@@ -41,18 +41,22 @@ namespace SphereWebSite.Data.Repositories.GroupRepository
 
         public async Task<IEnumerable<GroupModel>> GetAllGroups()
         {
-            return await _context.Groups.Include(g => g.Users).ToListAsync();
+            return await _context
+                .Groups.Include(g => g.UserGroups)
+                .ThenInclude(ug => ug.User)
+                .ToListAsync();
         }
 
         public async Task<GroupModel> GetGroupById(int groupId)
         {
             var group = await _context
-                .Groups.Include(g => g.Users)
+                .Groups.Include(g => g.UserGroups)
+                .ThenInclude(ug => ug.User)
                 .FirstOrDefaultAsync(g => g.GroupID == groupId);
 
             if (group == null)
             {
-                throw new KeyNotFoundException("grupo n encontrado");
+                throw new KeyNotFoundException("grupo não encontrado");
             }
             return group;
         }
