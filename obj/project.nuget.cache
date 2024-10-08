@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IboSAt+ARcWtwOnH/P25OjJZhWT065IEFSC/MfFN36t88uuvEIWjyEKVbopbPrb7WrG9/5vQBPxOgP2RxQMMfw==",
+  "dgSpecHash": "bGMc3gDZlbwVo4uxAXWU2deDb2HZ3ribbHSwLbYPYcNQoNbethMMxX0fljBa76xEnLkuNnvxCrkdZFFPBIhP+g==",
   "success": true,
-  "projectFilePath": "C:\\Sphere-WebSite\\SphereWebsite.csproj",
+  "projectFilePath": "C:\\Users\\angel\\Desktop\\Sphere-WebSite\\SphereWebsite.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\awssdk.core\\3.7.400.26\\awssdk.core.3.7.400.26.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\awssdk.s3\\3.7.403.5\\awssdk.s3.3.7.403.5.nupkg.sha512",

@@ -13,5 +13,6 @@ namespace SphereWebSite.Data.Interfaces.GroupRepository
         Task<IEnumerable<GroupModel>> GetAllGroups();
         Task<GroupModel> UpdateGroup(GroupModel group);
         Task DeleteGroup(int groupId);
+        Task JoinGroup(int groupId, int userId);
     }
 }

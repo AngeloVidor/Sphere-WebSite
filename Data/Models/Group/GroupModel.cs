@@ -19,5 +19,6 @@ namespace SphereWebSite.Data.Models.Group
         public List<string> Tags { get; set; } = new List<string>();
         public ICollection<UserModel> Users { get; set; } = new List<UserModel>();
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
     }
 }

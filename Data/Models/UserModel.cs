@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using SphereWebSite.Data.Models.Group;
 
 namespace SphereWebsite.Data.Models
 {
@@ -18,7 +19,9 @@ namespace SphereWebsite.Data.Models
         public string Password { get; set; }
         public ICollection<PostsModel> Posts { get; set; } = new List<PostsModel>();
         public string? ProfileImageUrl { get; set; }
+
         [NotMapped]
         public IFormFile ProfileImage { get; set; }
+        public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
     }
 }

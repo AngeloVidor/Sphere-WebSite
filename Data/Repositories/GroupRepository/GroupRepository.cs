@@ -73,5 +73,16 @@ namespace SphereWebSite.Data.Repositories.GroupRepository
             await _context.SaveChangesAsync();
             return existingGroup;
         }
+
+        public async Task JoinGroup(int groupId, int userId)
+        {
+            var userGroup = new UserGroup
+            {
+                UserId = userId,
+                GroupId = groupId
+            };
+            _context.UserGroups.Add(userGroup);
+            await _context.SaveChangesAsync();
+        }
     }
 }

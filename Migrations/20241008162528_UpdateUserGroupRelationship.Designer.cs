@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SphereWebsite.Data.ApplicationContext;
 
@@ -11,9 +12,11 @@ using SphereWebsite.Data.ApplicationContext;
 namespace SphereWebsite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241008162528_UpdateUserGroupRelationship")]
+    partial class UpdateUserGroupRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,29 +55,6 @@ namespace SphereWebsite.Migrations
                     b.HasKey("GroupID");
 
                     b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("SphereWebSite.Data.Models.Group.UserGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserGroups");
                 });
 
             modelBuilder.Entity("SphereWebsite.Data.Models.CommentsModel", b =>
@@ -188,25 +168,6 @@ namespace SphereWebsite.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SphereWebSite.Data.Models.Group.UserGroup", b =>
-                {
-                    b.HasOne("SphereWebSite.Data.Models.Group.GroupModel", "Group")
-                        .WithMany("UserGroups")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SphereWebsite.Data.Models.UserModel", "User")
-                        .WithMany("UserGroups")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SphereWebsite.Data.Models.CommentsModel", b =>
                 {
                     b.HasOne("SphereWebsite.Data.Models.PostsModel", "Post")
@@ -246,8 +207,6 @@ namespace SphereWebsite.Migrations
 
             modelBuilder.Entity("SphereWebSite.Data.Models.Group.GroupModel", b =>
                 {
-                    b.Navigation("UserGroups");
-
                     b.Navigation("Users");
                 });
 
@@ -259,8 +218,6 @@ namespace SphereWebsite.Migrations
             modelBuilder.Entity("SphereWebsite.Data.Models.UserModel", b =>
                 {
                     b.Navigation("Posts");
-
-                    b.Navigation("UserGroups");
                 });
 #pragma warning restore 612, 618
         }

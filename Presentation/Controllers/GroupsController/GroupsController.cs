@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -158,6 +159,31 @@ namespace SphereWebSite.Presentation.Controllers.GroupsController
             try
             {
                 await _groupService.DeleteGroup(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> JoinGroup(int groupId)
+        {
+            if (groupId <= 0)
+            {
+                return BadRequest("ID do grupo inválido.");
+            }
+
+            if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            {
+                return BadRequest("Usuário não autenticado.");
+            }
+
+            try
+            {
+                await _groupService.JoinGroup(groupId, userId);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

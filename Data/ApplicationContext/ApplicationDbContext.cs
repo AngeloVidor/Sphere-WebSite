@@ -17,5 +17,6 @@ namespace SphereWebsite.Data.ApplicationContext
         public DbSet<PostsModel> Posts { get; set; }
         public DbSet<CommentsModel> Comments { get; set; }
         public DbSet<GroupModel> Groups { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
     }
 }

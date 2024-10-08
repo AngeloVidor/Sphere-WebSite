@@ -14,5 +14,6 @@ namespace SphereWebSite.Business.Interfaces.GroupInterface
         Task DeleteGroup(int groupId);
         Task<GroupModel> GetGroupById(int groupId);
         Task<IEnumerable<GroupModel>> GetAllGroups();
+        Task JoinGroup(int groupId, int userId);
     }
 }

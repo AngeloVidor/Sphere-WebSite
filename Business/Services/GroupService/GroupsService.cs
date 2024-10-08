@@ -68,5 +68,10 @@ namespace SphereWebSite.Business.Services.GroupService
             }
             return await _groupRepository.UpdateGroup(group);
         }
+
+        public async Task JoinGroup(int groupId, int userId)
+        {
+            await _groupRepository.JoinGroup(groupId, userId);
+        }
     }
 }
