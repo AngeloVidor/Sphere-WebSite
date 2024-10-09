@@ -10,7 +10,7 @@ namespace SphereWebSite.Business.Interfaces.GroupPostsInterface
         Task<IEnumerable<GroupPostsModel>> GetAllPostsAsync();
         Task<GroupPostsModel> GetPostByIdAsync(int postId);
         Task<IEnumerable<GroupPostsModel>> GetPostsByGroupIdAsync(int groupId);
-        Task AddPostAsync(GroupPostsModel post);
+        Task AddPostAsync(GroupPostsModel post, IFormFile? file);
         Task UpdatePostAsync(GroupPostsModel post);
         Task DeletePostAsync(int postId);
     }
