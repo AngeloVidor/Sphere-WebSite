@@ -1,47 +1,115 @@
 @model SphereWebSite.Data.Models.Group.GroupModel
 
-@{
-    ViewData["Title"] = "Create Group";
-}
+<h2 class="my-4 text-center text-light display-4">Create Group</h2>
 
-<h2>Create Group</h2>
+<div class="container my-5">
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="bg-dark p-5 rounded-3 shadow-lg">
+        <div class="mb-4">
+            <label asp-for="Name" class="form-label text-light fs-5">Group Name</label>
+            <input asp-for="Name" class="form-control bg-gradient-light text-dark shadow-sm border-0" placeholder="Enter group name" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
 
-<div class="mb-3">
-    <a asp-controller="Groups" asp-action="Index" class="btn btn-secondary">Back to Groups</a>
+        <div class="mb-4">
+            <label asp-for="Description" class="form-label text-light fs-5">Description</label>
+            <textarea asp-for="Description" class="form-control bg-gradient-light text-dark shadow-sm border-0" rows="5" placeholder="Describe your group here..." required></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label text-light fs-5">Group Image</label>
+            <input type="file" name="groupImage" class="form-control bg-gradient-light text-dark shadow-sm border-0" accept="image/*" required />
+            <span asp-validation-for="GroupImageUrl" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Tags" class="form-label text-light fs-5">Tags (separated by commas)</label>
+            <input asp-for="Tags" class="form-control bg-gradient-light text-dark shadow-sm border-0" placeholder="Enter tags separated by commas" />
+            <span asp-validation-for="Tags" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-gradient btn-lg w-100 shadow-lg">Create Group</button>
+    </form>
+
+    <div class="mt-4 text-center">
+        <a asp-controller="Groups" asp-action="Index" class="btn btn-link text-light fs-6">Back to Groups</a>
+    </div>
 </div>
-
-<form asp-action="Create" method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label">Group Name</label>
-        <input asp-for="Name" class="form-control" required />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label">Description</label>
-        <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Group Image</label>
-        <input type="file" name="groupImage" class="form-control" required />
-        <span asp-validation-for="GroupImageUrl" class="text-danger"></span>
-    </div>
-
-
-    <div class="mb-3">
-        <label asp-for="Tags" class="form-label">Tags (separated by commas)</label>
-        <input asp-for="Tags" class="form-control" />
-        <span asp-validation-for="Tags" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Create Group</button>
-</form>
-
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<style>
+    body {
+        background-color: #1c1e22;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: auto;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: 1px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #f1f1f1;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: #fff;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(135deg, #5c0f9f 0%, #1d63e0 100%);
+        transform: scale(1.05);
+    }
+
+    .btn-link {
+        color: #6a11cb;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .btn-link:hover {
+        color: #2575fc;
+    }
+
+    .bg-gradient-light {
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control:focus {
+        background-color: #e9ecef;
+        border-color: #6a11cb;
+        box-shadow: 0 0 10px rgba(106, 17, 203, 0.5);
+    }
+
+    .shadow-lg {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .rounded-3 {
+        border-radius: 20px;
+    }
+</style>
