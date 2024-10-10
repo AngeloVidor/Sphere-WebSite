@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "KCMthzhHR4ZcIlMKH9ELnLhobHEzEN3+YmmRKtTY5Kg=",
+  "Hash": "cQBNwBIEljvskXIyoubUFQ0UXpgu/kAMBBwXLVplWNY=",
   "Source": "SphereWebsite",
   "BasePath": "_content/SphereWebsite",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\angel\\Desktop\\Sphere-WebSite\\wwwroot\\images\\Sphere.png",
+      "SourceId": "SphereWebsite",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\angel\\Desktop\\Sphere-WebSite\\wwwroot\\",
+      "BasePath": "_content/SphereWebsite",
+      "RelativePath": "images/Sphere.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Sphere.png"
     },
     {
       "Identity": "C:\\Users\\angel\\Desktop\\Sphere-WebSite\\wwwroot\\js\\site.js",

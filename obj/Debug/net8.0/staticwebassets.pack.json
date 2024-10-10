@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\angel\\Desktop\\Sphere-WebSite\\wwwroot\\images\\Sphere.png",
+      "PackagePath": "staticwebassets\\images\\Sphere.png"
+    },
+    {
       "Id": "C:\\Users\\angel\\Desktop\\Sphere-WebSite\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
