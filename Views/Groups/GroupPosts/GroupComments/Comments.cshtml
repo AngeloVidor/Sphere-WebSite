@@ -1,35 +1,212 @@
 @model SphereWebSite.Data.Models.GroupPostCommentsViewModel
 
-<h1>@Model.GroupPost.Title</h1>
+<div class="post-details">
+    <h1>@Model.GroupPost.Title</h1>
+    <p>@Model.GroupPost.Description</p>
 
-@if (!string.IsNullOrEmpty(Model.GroupPost.ImageUrl))
-{
-    <img src="@Model.GroupPost.ImageUrl" alt="Imagem do Post" class="img-fluid" />
-}
+    @if (!string.IsNullOrEmpty(Model.GroupPost.ImageUrl))
+    {
+        <img src="@Model.GroupPost.ImageUrl" alt="@Model.GroupPost.Title" class="img-fluid rounded" style="max-height: 400px; width: auto; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" />
+    }
 
-<p>@Model.GroupPost.Description</p>
-
-<h2>Comentários</h2>
-@foreach (var comment in Model.Comments)
-{
-    <div class="comment">
-        <p>@comment.Content</p>
-        <p><small>@comment.CreatedAt.ToString("g")</small></p>
-    </div>
-}
-
-<h3>Adicionar um comentário</h3>
-<form asp-action="Create" method="post">
-    <input type="hidden" name="GroupPostID" value="@Model.GroupPost.GroupPostID" />
-
-    <div class="form-group">
-        <label for="Content">Comentário:</label>
-        <textarea name="Content" class="form-control" required></textarea>
+    <div class="post-meta">
+        <small>Posted on @Model.GroupPost.CreatedAt.ToString("dd/MM/yyyy")</small>
     </div>
 
-    <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
-</form>
+    <hr />
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <h3>Comments</h3>
+    <ul id="comments-list">
+        @foreach (var comment in Model.Comments)
+        {
+            <li class="comment">
+                <p>@comment.Content</p>
+                <small>Commented by @comment.User.NickName on @comment.CreatedAt.ToString("dd/MM/yyyy")</small>
+                <button class="btn-dropdown" data-comment-id="@comment.CommentID">...</button>
+                <div class="dropdown-content" style="display:none;">
+                    <button class="delete-comment-btn" data-comment-id="@comment.CommentID">Delete Comment</button>
+                </div>
+            </li>
+        }
+    </ul>
+
+    <hr />
+
+    <h4>Add Comment</h4>
+    @if (User.Identity.IsAuthenticated) 
+    {
+        <form id="commentForm">
+            <div class="form-group">
+                <label for="content">Comment:</label>
+                <textarea id="content" name="content" class="form-control" rows="3" required></textarea>
+            </div>
+            <input type="hidden" id="postId" value="@Model.GroupPost.GroupPostID" />
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    }
+    else
+    {
+        <p>You need to be <a href="/Users/Login">logged in</a> to comment.</p>
+    }
+
+    <div id="commentSuccessMessage" style="display:none;">Comment added successfully!</div>
+</div>
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">@Model.GroupPost.Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="@Model.GroupPost.ImageUrl" alt="@Model.GroupPost.Title" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#commentForm').submit(function(event) {
+            event.preventDefault();
+
+            var postId = $('#postId').val();
+            var content = $('#content').val();
+
+            $.ajax({
+                url: '/Comments/AddComment',
+                type: 'POST',
+                data: { postId: postId, content: content },
+                success: function(response) {
+                    $('#comments-list').append('<li class="comment"><p>' + content + '</p><small>Commented by you now</small></li>');
+                    $('#content').val('');
+                    $('#commentSuccessMessage').show().delay(2000).fadeOut();
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        alert('You need to be logged in to comment.');
+                    } else {
+                        alert('Error adding comment. Please try again.');
+                    }
+                }
+            });
+        });
+
+        $('.btn-dropdown').click(function() {
+            $(this).siblings('.dropdown-content').toggle();
+        });
+
+        $('.delete-comment-btn').click(function() {
+            var commentId = $(this).data('comment-id');
+            if (confirm('Are you sure you want to delete this comment?')) {
+                $.ajax({
+                    url: '/Comments/DeleteComment',
+                    type: 'POST',
+                    data: { commentId: commentId },
+                    success: function(response) {
+                        if (response.success) {
+                            $('li.comment').filter(function() {
+                                return $(this).find('.delete-comment-btn').data('comment-id') === commentId;
+                            }).remove();
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Error deleting comment. Please try again.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<style>
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+
+    .post-details {
+        max-width: 800px; 
+        margin: auto;
+        padding: 20px;
+        background-color: #1e1e1e;
+        border-radius: 8px; 
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); 
+    }
+
+    h1, h3, h4 {
+        color: #ffcc00; 
+    }
+
+    .post-meta {
+        margin: 10px 0;
+        font-size: 14px;
+    }
+
+    .comment {
+        background-color: #2a2a2a;
+        border-radius: 5px; 
+        padding: 10px;
+        margin-bottom: 10px;
+        position: relative; 
+    }
+
+    .btn-dropdown {
+        background: none;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        position: absolute; 
+        top: 5px;
+        right: 5px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 5px;
+        top: 30px;
+        background-color: #1e1e1e;
+        border: 1px solid #ccc;
+        z-index: 1;
+    }
+
+    .delete-comment-btn {
+        display: block;
+        color: #ff5722; 
+        background: none;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        background-color: #ff5722; 
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #e64a19; 
+    }
+
+    #commentSuccessMessage {
+        margin-top: 10px;
+        color: #4caf50; 
+    }
+
+    a {
+        color: #1e88e5; 
+    }
+
+    a:hover {
+        text-decoration: underline; 
+    }
+</style>

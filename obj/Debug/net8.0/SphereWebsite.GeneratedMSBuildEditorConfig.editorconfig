@@ -9,107 +9,103 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SphereWebsite
 build_property.RootNamespace = SphereWebsite
-build_property.ProjectDir = C:\Users\angel\Desktop\Sphere-WebSite\
+build_property.ProjectDir = C:\Sphere-WebSite\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\angel\Desktop\Sphere-WebSite
+build_property.MSBuildProjectDirectory = C:\Sphere-WebSite
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Comments/Index.cshtml]
+[C:/Sphere-WebSite/Views/Comments/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Groups/Create.cshtml]
+[C:/Sphere-WebSite/Views/Groups/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Groups/Details.cshtml]
+[C:/Sphere-WebSite/Views/Groups/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBzXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Groups/GroupPosts/Create.cshtml]
+[C:/Sphere-WebSite/Views/Groups/GroupPosts/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBzXEdyb3VwUG9zdHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Groups/GroupPosts/Details.cshtml]
+[C:/Sphere-WebSite/Views/Groups/GroupPosts/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBzXEdyb3VwUG9zdHNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Groups/GroupPosts/GroupComments/Comments.cshtml]
+[C:/Sphere-WebSite/Views/Groups/GroupPosts/GroupComments/Comments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBzXEdyb3VwUG9zdHNcR3JvdXBDb21tZW50c1xDb21tZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Groups/GroupPosts/GroupComments/Create.cshtml]
+[C:/Sphere-WebSite/Views/Groups/GroupPosts/GroupComments/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBzXEdyb3VwUG9zdHNcR3JvdXBDb21tZW50c1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Groups/GroupPosts/GroupComments/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBzXEdyb3VwUG9zdHNcR3JvdXBDb21tZW50c1xJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Groups/Index.cshtml]
+[C:/Sphere-WebSite/Views/Groups/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR3JvdXBzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Home/Index.cshtml]
+[C:/Sphere-WebSite/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Home/Privacy.cshtml]
+[C:/Sphere-WebSite/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Posts/Create.cshtml]
+[C:/Sphere-WebSite/Views/Posts/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Posts/Delete.cshtml]
+[C:/Sphere-WebSite/Views/Posts/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdHNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Posts/Details.cshtml]
+[C:/Sphere-WebSite/Views/Posts/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdHNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Posts/Edit.cshtml]
+[C:/Sphere-WebSite/Views/Posts/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdHNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Posts/Index.cshtml]
+[C:/Sphere-WebSite/Views/Posts/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Shared/Error.cshtml]
+[C:/Sphere-WebSite/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Sphere-WebSite/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Users/Login.cshtml]
+[C:/Sphere-WebSite/Views/Users/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Users/Profile.cshtml]
+[C:/Sphere-WebSite/Views/Users/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Users/Register.cshtml]
+[C:/Sphere-WebSite/Views/Users/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/_ViewImports.cshtml]
+[C:/Sphere-WebSite/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/_ViewStart.cshtml]
+[C:/Sphere-WebSite/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/angel/Desktop/Sphere-WebSite/Views/Shared/_Layout.cshtml]
+[C:/Sphere-WebSite/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-frn67jnk78
