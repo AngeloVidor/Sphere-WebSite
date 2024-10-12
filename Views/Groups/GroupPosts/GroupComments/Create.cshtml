@@ -1,0 +1,26 @@
+@model SphereWebSite.Data.Models.GroupPostCommentsViewModel
+
+@{
+    ViewBag.Title = "Adicionar Comentário";
+}
+
+<h2>Adicionar Comentário</h2>
+
+<form asp-action="Create" asp-controller="GroupFeedComments" method="post">
+    <input type="hidden" asp-for="NewComment.GroupPostID" /> 
+
+    <div class="form-group">
+        <label asp-for="NewComment.Content" class="control-label"></label>
+        <textarea asp-for="NewComment.Content" class="form-control" rows="5" required></textarea>
+        <span asp-validation-for="NewComment.Content" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
+        <a asp-action="Index" asp-controller="GroupPosts" class="btn btn-secondary">Voltar</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

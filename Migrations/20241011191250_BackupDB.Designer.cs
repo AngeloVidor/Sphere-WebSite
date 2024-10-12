@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SphereWebsite.Data.ApplicationContext;
 
@@ -11,9 +12,11 @@ using SphereWebsite.Data.ApplicationContext;
 namespace SphereWebsite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241011191250_BackupDB")]
+    partial class BackupDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,36 +78,6 @@ namespace SphereWebsite.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserGroups");
-                });
-
-            modelBuilder.Entity("SphereWebSite.Data.Models.GroupFeedComments.GroupFeedCommentsModel", b =>
-                {
-                    b.Property<int>("CommentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentID"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("GroupPostID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("CommentID");
-
-                    b.HasIndex("GroupPostID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("GroupFeedComments");
                 });
 
             modelBuilder.Entity("SphereWebsite.Data.Models.CommentsModel", b =>
@@ -283,25 +256,6 @@ namespace SphereWebsite.Migrations
                         .IsRequired();
 
                     b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SphereWebSite.Data.Models.GroupFeedComments.GroupFeedCommentsModel", b =>
-                {
-                    b.HasOne("SphereWebsite.Data.Models.GroupPostsModel", "GroupPost")
-                        .WithMany()
-                        .HasForeignKey("GroupPostID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SphereWebsite.Data.Models.UserModel", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GroupPost");
 
                     b.Navigation("User");
                 });

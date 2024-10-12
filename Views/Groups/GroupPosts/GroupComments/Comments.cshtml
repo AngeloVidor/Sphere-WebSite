@@ -1,0 +1,35 @@
+@model SphereWebSite.Data.Models.GroupPostCommentsViewModel
+
+<h1>@Model.GroupPost.Title</h1>
+
+@if (!string.IsNullOrEmpty(Model.GroupPost.ImageUrl))
+{
+    <img src="@Model.GroupPost.ImageUrl" alt="Imagem do Post" class="img-fluid" />
+}
+
+<p>@Model.GroupPost.Description</p>
+
+<h2>Comentários</h2>
+@foreach (var comment in Model.Comments)
+{
+    <div class="comment">
+        <p>@comment.Content</p>
+        <p><small>@comment.CreatedAt.ToString("g")</small></p>
+    </div>
+}
+
+<h3>Adicionar um comentário</h3>
+<form asp-action="Create" method="post">
+    <input type="hidden" name="GroupPostID" value="@Model.GroupPost.GroupPostID" />
+
+    <div class="form-group">
+        <label for="Content">Comentário:</label>
+        <textarea name="Content" class="form-control" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Adicionar Comentário</button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

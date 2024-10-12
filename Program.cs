@@ -1,27 +1,30 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using SphereWebsite.Business.Interfaces.CommentsInterface;
+using SphereWebSite.Business.Interfaces.GroupFeedCommentsInterface;
+using SphereWebSite.Business.Interfaces.GroupInterface;
+using SphereWebSite.Business.Interfaces.GroupPostsInterface;
 using SphereWebsite.Business.Interfaces.S3Interface;
 using SphereWebsite.Business.Interfaces.UserInterface;
 using SphereWebsite.Business.Services;
+using SphereWebSite.Business.Services;
 using SphereWebsite.Business.Services.AWS;
 using SphereWebsite.Business.Services.CommentsServices;
+using SphereWebSite.Business.Services.GroupFeedCommentsServices;
+using SphereWebSite.Business.Services.GroupService;
 using SphereWebsite.Business.Services.PostsServices;
 using SphereWebsite.Data.ApplicationContext;
 using SphereWebsite.Data.Interfaces.CommentsInterface;
+using SphereWebSite.Data.Interfaces.GroupRepository;
 using SphereWebsite.Data.Interfaces.PostsInterface;
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
 using SphereWebsite.Data.Interfaces.UserInterface;
 using SphereWebsite.Data.Repositories;
 using SphereWebsite.Data.Repositories.CommentsRepository;
+using SphereWebSite.Data.Repositories.GroupFeedCommentsRepository;
+using SphereWebSite.Data.Repositories.GroupRepository;
 using SphereWebsite.Data.Repositories.PostsRepository;
 using SphereWebsite.Data.Repositories.UserRepository;
-using SphereWebSite.Business.Interfaces.GroupInterface;
-using SphereWebSite.Business.Interfaces.GroupPostsInterface;
-using SphereWebSite.Business.Services;
-using SphereWebSite.Business.Services.GroupService;
-using SphereWebSite.Data.Interfaces.GroupRepository;
-using SphereWebSite.Data.Repositories.GroupRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,9 +42,9 @@ builder.Services.AddSingleton<S3Service>();
 builder.Services.AddScoped<IGroupService, GroupsService>();
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IGroupPostsService, GroupPostsService>();
-builder.Services.AddScoped<IGroupPostsRepository, GroupPostsRepository>(); 
-
-
+builder.Services.AddScoped<IGroupPostsRepository, GroupPostsRepository>();
+builder.Services.AddScoped<IGroupFeedCommentsRepository, GroupFeedCommentsRepository>();
+builder.Services.AddScoped<IGroupFeedCommentsService, GroupFeedCommentsService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

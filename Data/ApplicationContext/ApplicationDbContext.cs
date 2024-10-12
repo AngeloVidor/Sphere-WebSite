@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SphereWebsite.Data.Models;
 using SphereWebSite.Data.Models.Group;
+using SphereWebSite.Data.Models.GroupFeedComments;
 
 namespace SphereWebsite.Data.ApplicationContext
 {
@@ -19,5 +20,6 @@ namespace SphereWebsite.Data.ApplicationContext
         public DbSet<GroupModel> Groups { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<GroupPostsModel> GroupPosts { get; set; }
+        public DbSet<GroupFeedCommentsModel> GroupFeedComments { get; set; }
     }
 }

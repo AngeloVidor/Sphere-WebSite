@@ -5,17 +5,24 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SphereWebsite.Business.Interfaces.CommentsInterface;
+using SphereWebSite.Business.Interfaces.GroupPostsInterface;
 using SphereWebsite.Data.Models;
+using SphereWebSite.Data.Models.GroupFeedComments;
 
 namespace SphereWebsite.Presentation.Controllers.CommentsController
 {
     public class CommentsController : Controller
     {
         private readonly ICommentsService _commentsService;
+        private readonly IGroupPostsService _groupPostsService;
 
-        public CommentsController(ICommentsService commentsService)
+        public CommentsController(
+            IGroupPostsService groupPostsService,
+            ICommentsService commentsService
+        )
         {
             _commentsService = commentsService;
+            _groupPostsService = groupPostsService;
         }
 
         [HttpGet]
