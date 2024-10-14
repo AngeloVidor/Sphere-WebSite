@@ -181,15 +181,43 @@ namespace SphereWebSite.Presentation.Controllers.GroupFeedCommentsController
             return View(comment);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteComment(int commentId)
         {
-            var comment = await _commentsService.GetCommentByIdAsync(id);
-            if (comment == null)
+            _logger.LogInformation(
+                "DeleteComment action started for commentId: {CommentId}",
+                commentId
+            );
+
+            try
             {
-                return NotFound();
+                var comment = await _commentsService.GetCommentByIdAsync(commentId);
+                if (comment == null)
+                {
+                    _logger.LogWarning("Comment not found for commentId: {CommentId}", commentId);
+                    return Json(new { success = false, message = "Comentário não encontrado." });
+                }
+
+                await _commentsService.DeleteCommentAsync(commentId);
+                _logger.LogInformation(
+                    "Comment deleted successfully. commentId: {CommentId}",
+                    commentId
+                );
+
+                return Json(new { success = true, message = "Comentário deletado com sucesso!" });
             }
-            return View(comment);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting comment. commentId: {CommentId}", commentId);
+                return Json(
+                    new
+                    {
+                        success = false,
+                        message = "Erro ao deletar o comentário. Tente novamente."
+                    }
+                );
+            }
         }
 
         [HttpPost, ActionName("Delete")]

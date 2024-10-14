@@ -6,7 +6,8 @@
 
     @if (!string.IsNullOrEmpty(Model.GroupPost.ImageUrl))
     {
-        <img src="@Model.GroupPost.ImageUrl" alt="@Model.GroupPost.Title" class="img-fluid rounded" style="max-height: 400px; width: auto; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" />
+        <img src="@Model.GroupPost.ImageUrl" alt="@Model.GroupPost.Title" class="img-fluid rounded"
+            style="max-height: 400px; width: auto; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" />
     }
 
     <div class="post-meta">
@@ -33,7 +34,7 @@
     <hr />
 
     <h4>Add Comment</h4>
-    @if (User.Identity.IsAuthenticated) 
+    @if (User.Identity.IsAuthenticated)
     {
         <form id="commentForm">
             <div class="form-group">
@@ -69,23 +70,23 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#commentForm').submit(function(event) {
+    $(document).ready(function () {
+        $('#commentForm').submit(function (event) {
             event.preventDefault();
 
             var postId = $('#groupPostId').val();
             var content = $('#content').val();
-            var token = $('input[name="__RequestVerificationToken"]').val(); 
+            var token = $('input[name="__RequestVerificationToken"]').val();
 
             $.ajax({
                 url: '/GroupFeedComments/Create',
                 type: 'POST',
-                data: { 
-                    groupPostID: postId, 
-                    content: content, 
-                    __RequestVerificationToken: token 
+                data: {
+                    groupPostID: postId,
+                    content: content,
+                    __RequestVerificationToken: token
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         $('#comments-list').append(`
                             <li class="comment" data-comment-id="${response.comment.CommentID}">
@@ -103,37 +104,43 @@
                         $('#commentSuccessMessage').text(response.message).show().delay(2000).fadeOut();
                     }
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.error("Error details:", xhr);
                     $('#commentSuccessMessage').text('Error adding comment. Please try again.').show().delay(2000).fadeOut();
                 }
             });
         });
 
-        $(document).on('click', '.btn-dropdown', function() {
+        $(document).on('click', '.btn-dropdown', function () {
             $(this).siblings('.dropdown-content').toggle();
         });
 
-        $(document).on('click', '.delete-comment-btn', function() {
+        $(document).on('click', '.delete-comment-btn', function () {
             var commentId = $(this).data('comment-id');
+            var token = $('input[name="__RequestVerificationToken"]').val(); // Captura o token anti-forgery
+
             if (confirm('Are you sure you want to delete this comment?')) {
                 $.ajax({
                     url: '/GroupFeedComments/DeleteComment',
                     type: 'POST',
-                    data: { commentId: commentId },
-                    success: function(response) {
+                    data: {
+                        commentId: commentId,
+                        __RequestVerificationToken: token // Inclui o token na requisição
+                    },
+                    success: function (response) {
                         if (response.success) {
                             $('li.comment[data-comment-id="' + commentId + '"]').remove();
                         } else {
                             alert(response.message);
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         alert('Error deleting comment. Please try again.');
                     }
                 });
             }
         });
+
     });
 </script>
 
@@ -144,34 +151,36 @@
     }
 
     .post-details {
-        max-width: 800px; 
+        max-width: 800px;
         margin: auto;
         padding: 20px;
         background-color: #1e1e1e;
-        border-radius: 8px; 
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); 
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
-    h1, h3, h4 {
-        color: #ffcc00; 
+    h1,
+    h3,
+    h4 {
+        color: #ffcc00;
     }
 
     .post-meta {
         margin: 10px 0;
-        font-size: 0.9em; 
-        color: #bbb; 
+        font-size: 0.9em;
+        color: #bbb;
     }
 
     .comment {
-        background-color: #292929; 
+        background-color: #292929;
         padding: 10px;
         margin: 5px 0;
-        border-radius: 4px; 
+        border-radius: 4px;
     }
 
     .btn-dropdown {
         cursor: pointer;
-        color: #ffcc00; 
+        color: #ffcc00;
         background: none;
         border: none;
     }
@@ -187,20 +196,20 @@
     }
 
     .dropdown-content button {
-        color: white; 
-        padding: 10px; 
-        text-align: left; 
-        border: none; 
+        color: white;
+        padding: 10px;
+        text-align: left;
+        border: none;
         background: none;
-        width: 100%; 
+        width: 100%;
     }
 
     .dropdown-content button:hover {
-        background-color: #444; 
+        background-color: #444;
     }
 
     #commentSuccessMessage {
-        color: green; 
+        color: green;
         margin-top: 10px;
     }
 </style>
