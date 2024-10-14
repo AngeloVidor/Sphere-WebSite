@@ -19,7 +19,7 @@
     <ul id="comments-list">
         @foreach (var comment in Model.Comments)
         {
-            <li class="comment">
+            <li class="comment" data-comment-id="@comment.CommentID">
                 <p>@comment.Content</p>
                 <small>Commented by @comment.User.NickName on @comment.CreatedAt.ToString("dd/MM/yyyy")</small>
                 <button class="btn-dropdown" data-comment-id="@comment.CommentID">...</button>
@@ -40,7 +40,8 @@
                 <label for="content">Comment:</label>
                 <textarea id="content" name="content" class="form-control" rows="3" required></textarea>
             </div>
-            <input type="hidden" id="postId" value="@Model.GroupPost.GroupPostID" />
+            <input type="hidden" id="groupPostId" value="@Model.GroupPost.GroupPostID" />
+            @Html.AntiForgeryToken() <!-- Token CSRF -->
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     }
@@ -72,44 +73,57 @@
         $('#commentForm').submit(function(event) {
             event.preventDefault();
 
-            var postId = $('#postId').val();
+            var postId = $('#groupPostId').val();
             var content = $('#content').val();
+            var token = $('input[name="__RequestVerificationToken"]').val(); 
 
             $.ajax({
-                url: '/Comments/AddComment',
+                url: '/GroupFeedComments/Create',
                 type: 'POST',
-                data: { postId: postId, content: content },
+                data: { 
+                    groupPostID: postId, 
+                    content: content, 
+                    __RequestVerificationToken: token 
+                },
                 success: function(response) {
-                    $('#comments-list').append('<li class="comment"><p>' + content + '</p><small>Commented by you now</small></li>');
-                    $('#content').val('');
-                    $('#commentSuccessMessage').show().delay(2000).fadeOut();
+                    if (response.success) {
+                        $('#comments-list').append(`
+                            <li class="comment" data-comment-id="${response.comment.CommentID}">
+                                <p>${response.comment.Content}</p>
+                                <small>Commented by you now</small>
+                                <button class="btn-dropdown" data-comment-id="${response.comment.CommentID}">...</button>
+                                <div class="dropdown-content" style="display:none;">
+                                    <button class="delete-comment-btn" data-comment-id="${response.comment.CommentID}">Delete Comment</button>
+                                </div>
+                            </li>
+                        `);
+                        $('#content').val('');
+                        $('#commentSuccessMessage').text('Comment added successfully!').show().delay(2000).fadeOut();
+                    } else {
+                        $('#commentSuccessMessage').text(response.message).show().delay(2000).fadeOut();
+                    }
                 },
                 error: function(xhr) {
-                    if (xhr.status === 401) {
-                        alert('You need to be logged in to comment.');
-                    } else {
-                        alert('Error adding comment. Please try again.');
-                    }
+                    console.error("Error details:", xhr);
+                    $('#commentSuccessMessage').text('Error adding comment. Please try again.').show().delay(2000).fadeOut();
                 }
             });
         });
 
-        $('.btn-dropdown').click(function() {
+        $(document).on('click', '.btn-dropdown', function() {
             $(this).siblings('.dropdown-content').toggle();
         });
 
-        $('.delete-comment-btn').click(function() {
+        $(document).on('click', '.delete-comment-btn', function() {
             var commentId = $(this).data('comment-id');
             if (confirm('Are you sure you want to delete this comment?')) {
                 $.ajax({
-                    url: '/Comments/DeleteComment',
+                    url: '/GroupFeedComments/DeleteComment',
                     type: 'POST',
                     data: { commentId: commentId },
                     success: function(response) {
                         if (response.success) {
-                            $('li.comment').filter(function() {
-                                return $(this).find('.delete-comment-btn').data('comment-id') === commentId;
-                            }).remove();
+                            $('li.comment[data-comment-id="' + commentId + '"]').remove();
                         } else {
                             alert(response.message);
                         }
@@ -144,69 +158,49 @@
 
     .post-meta {
         margin: 10px 0;
-        font-size: 14px;
+        font-size: 0.9em; 
+        color: #bbb; 
     }
 
     .comment {
-        background-color: #2a2a2a;
-        border-radius: 5px; 
+        background-color: #292929; 
         padding: 10px;
-        margin-bottom: 10px;
-        position: relative; 
+        margin: 5px 0;
+        border-radius: 4px; 
     }
 
     .btn-dropdown {
+        cursor: pointer;
+        color: #ffcc00; 
         background: none;
         border: none;
-        color: #ffffff;
-        cursor: pointer;
-        position: absolute; 
-        top: 5px;
-        right: 5px;
     }
 
     .dropdown-content {
         display: none;
         position: absolute;
-        right: 5px;
-        top: 30px;
-        background-color: #1e1e1e;
-        border: 1px solid #ccc;
+        background-color: #333;
+        border-radius: 4px;
+        min-width: 120px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         z-index: 1;
     }
 
-    .delete-comment-btn {
-        display: block;
-        color: #ff5722; 
+    .dropdown-content button {
+        color: white; 
+        padding: 10px; 
+        text-align: left; 
+        border: none; 
         background: none;
-        border: none;
-        padding: 5px;
-        cursor: pointer;
+        width: 100%; 
     }
 
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .btn-primary {
-        background-color: #ff5722; 
-        border: none;
-    }
-
-    .btn-primary:hover {
-        background-color: #e64a19; 
+    .dropdown-content button:hover {
+        background-color: #444; 
     }
 
     #commentSuccessMessage {
+        color: green; 
         margin-top: 10px;
-        color: #4caf50; 
-    }
-
-    a {
-        color: #1e88e5; 
-    }
-
-    a:hover {
-        text-decoration: underline; 
     }
 </style>

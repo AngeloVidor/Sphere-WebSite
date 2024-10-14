@@ -55,62 +55,102 @@ namespace SphereWebSite.Presentation.Controllers.GroupFeedCommentsController
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int groupPostID, string content)
         {
-        
+            _logger.LogInformation(
+                "Create action started. groupPostID: {GroupPostID}, content: {Content}",
+                groupPostID,
+                content
+            );
+
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (int.TryParse(userIdString, out int userId))
+            if (!int.TryParse(userIdString, out int userId))
             {
-                _logger.LogInformation("Usuário ID: {UserId}", userId);
-
-                if (string.IsNullOrWhiteSpace(content))
-                {
-                    ModelState.AddModelError(
-                        nameof(content),
-                        "O conteúdo do comentário é obrigatório."
-                    );
-                }
-
-                if (groupPostID <= 0)
-                {
-                    ModelState.AddModelError(
-                        nameof(groupPostID),
-                        "O ID do post do grupo é obrigatório."
-                    );
-                }
-
-                if (ModelState.IsValid)
-                {
-                    var newComment = new GroupFeedCommentsModel
-                    {
-                        UserID = userId,
-                        GroupPostID = groupPostID,
-                        Content = content,
-                        CreatedAt = DateTime.Now 
-                    };
-
-                    await _commentsService.AddCommentAsync(newComment);
-                    return RedirectToAction("Details", "GroupPosts", new { id = groupPostID });
-                }
-                else
-                {
-                    _logger.LogWarning("ModelState inválido: {@ModelState}", ModelState);
-                }
-            }
-            else
-            {
-                _logger.LogError("Falha ao obter UserId a partir dos claims.");
+                _logger.LogError(
+                    "Error parsing user ID. userIdString: {UserIdString}",
+                    userIdString
+                );
+                return Json(new { success = false, message = "Erro ao identificar o usuário." });
             }
 
-            var post = await _groupPostsService.GetPostByIdAsync(groupPostID);
-            var comments = await _commentsService.GetCommentsByPostIdAsync(groupPostID);
-
-            var viewModel = new GroupPostCommentsViewModel
+            if (string.IsNullOrWhiteSpace(content))
             {
-                GroupPost = post,
-                Comments = comments.ToList()
+                _logger.LogWarning("Content is empty.");
+                return Json(
+                    new { success = false, message = "O conteúdo do comentário é obrigatório." }
+                );
+            }
+
+            if (groupPostID <= 0)
+            {
+                _logger.LogWarning(
+                    "GroupPostID is invalid. groupPostID: {GroupPostID}",
+                    groupPostID
+                );
+                return Json(
+                    new { success = false, message = "O ID do post do grupo é obrigatório." }
+                );
+            }
+
+            var groupPost = await _groupPostsService.GetPostByIdAsync(groupPostID);
+            if (groupPost == null)
+            {
+                _logger.LogWarning("Group post not found. groupPostID: {GroupPostID}", groupPostID);
+                return Json(
+                    new { success = false, message = "O post do grupo não foi encontrado." }
+                );
+            }
+
+            var newComment = new GroupFeedCommentsModel
+            {
+                UserID = userId,
+                GroupPostID = groupPostID,
+                Content = content,
+                CreatedAt = DateTime.UtcNow
             };
 
-            return View("~/Views/Groups/GroupPosts/GroupComments/Create.cshtml", viewModel);
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+                _logger.LogWarning("Model state is invalid: {Errors}", string.Join(", ", errors));
+                return Json(new { success = false, message = "Dados do comentário inválidos." });
+            }
+
+            try
+            {
+                await _commentsService.AddCommentAsync(newComment);
+                _logger.LogInformation(
+                    "Comment added successfully. groupPostID: {GroupPostID}, userId: {UserID}",
+                    groupPostID,
+                    userId
+                );
+
+                return Json(
+                    new
+                    {
+                        success = true,
+                        comment = newComment,
+                        message = "Comentário adicionado com sucesso!"
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Error adding comment. groupPostID: {GroupPostID}, userId: {UserID}",
+                    groupPostID,
+                    userId
+                );
+                return Json(
+                    new
+                    {
+                        success = false,
+                        message = "Erro ao adicionar o comentário. Tente novamente."
+                    }
+                );
+            }
         }
 
         [HttpGet]
