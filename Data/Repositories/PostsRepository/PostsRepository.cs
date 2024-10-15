@@ -44,6 +44,7 @@ namespace SphereWebsite.Data.Repositories.PostsRepository
         {
             return await _context
                 .Posts.Include(p => p.User)
+                .Include(p => p.Votes)
                 .FirstOrDefaultAsync(p => p.PostID == postId);
         }
 

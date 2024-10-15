@@ -101,19 +101,21 @@ namespace SphereWebsite.Business.Services.PostsServices
 
             if (existingVote != null)
             {
-                if (existingVote.IsUpvote != isUpvote)
+                if (existingVote.IsUpvote == isUpvote)
                 {
-                    existingVote.IsUpvote = isUpvote; 
-                    if (isUpvote)
-                    {
-                        post.Upvotes++;
-                        post.Downvotes--;
-                    }
-                    else
-                    {
-                        post.Upvotes--;
-                        post.Downvotes++;
-                    }
+                    return; 
+                }
+
+                existingVote.IsUpvote = isUpvote;
+                if (isUpvote)
+                {
+                    post.Upvotes++;
+                    post.Downvotes--;
+                }
+                else
+                {
+                    post.Upvotes--;
+                    post.Downvotes++;
                 }
             }
             else

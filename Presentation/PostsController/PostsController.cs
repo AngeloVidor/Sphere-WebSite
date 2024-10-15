@@ -168,7 +168,7 @@ namespace SphereWebsite.Controllers
             await _postsService.VoteOnPost(postId, userId, false);
 
             var post = await _postsService.GetPostById(postId);
-            Console.WriteLine($"Upvotes: {post.Upvotes}, Downvotes: {post.Downvotes}"); 
+            Console.WriteLine($"Upvotes: {post.Upvotes}, Downvotes: {post.Downvotes}");
 
             return Json(
                 new

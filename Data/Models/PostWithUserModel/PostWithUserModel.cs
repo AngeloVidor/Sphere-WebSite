@@ -9,5 +9,6 @@ namespace SphereWebsite.Data.Models
     {
         public PostsModel Post { get; set; }
         public UserModel User { get; set; }
+        public bool UserHasVoted { get; set; }
     }
 }
