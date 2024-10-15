@@ -15,5 +15,6 @@ namespace SphereWebsite.Data.Interfaces.PostsServiceInterface
         Task<IEnumerable<PostsModel>> GetAllPosts();
         Task<PostsModel> UpdatePost(PostsModel post, IFormFile? image = null);
         Task DeletePost(int postId);
+        Task VoteOnPost(int postId, int userId, bool isUpvote);
     }
 }

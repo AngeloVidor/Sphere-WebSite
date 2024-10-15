@@ -1,5 +1,19 @@
 @using System.Security.Claims
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <title>@ViewBag.Title</title>
+</head>
+
 <h2 class="my-4 text-center text-light">Feed</h2>
 
 <div class="text-end mb-4">
@@ -23,26 +37,31 @@
                             <div class="d-flex align-items-center">
                                 @if (!string.IsNullOrEmpty(user.ProfileImageUrl))
                                 {
-                                    <img src="@user.ProfileImageUrl" alt="@user.NickName" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;" />
+                                    <img src="@user.ProfileImageUrl" alt="@user.NickName" class="rounded-circle"
+                                        style="width: 40px; height: 40px; margin-right: 10px;" />
                                 }
                                 <p class="text-light mb-0"><strong>Posted by:</strong> @user.NickName</p>
                             </div>
-                            @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == post.UserId.ToString())
+                            @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) ==
+                           post.UserId.ToString())
                             {
                                 <div class="dropdown">
-                                    <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-ellipsis-h"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                         <li>
-                                            <a asp-action="Edit" asp-route-id="@post.PostID" class="dropdown-item" title="Edit Post">
+                                            <a asp-action="Edit" asp-route-id="@post.PostID" class="dropdown-item"
+                                                title="Edit Post">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
                                         </li>
                                         <li>
                                             <a asp-action="Delete" asp-route-id="@post.PostID" class="dropdown-item text-danger"
-                                               title="Delete Post" onclick="return confirm('Are you sure you want to delete this post?');">
-                                               <i class="fas fa-trash"></i> Delete
+                                                title="Delete Post"
+                                                onclick="return confirm('Are you sure you want to delete this post?');">
+                                                <i class="fas fa-trash"></i> Delete
                                             </a>
                                         </li>
                                     </ul>
@@ -55,9 +74,9 @@
 
                     @if (!string.IsNullOrEmpty(post.ImageUrl))
                     {
-                        <img src="@post.ImageUrl" alt="@post.Title" class="img-fluid rounded" style="max-height: 200px; width: auto;"
-                             data-bs-toggle="modal" data-bs-target="#imageModal" 
-                             onclick="showImageModal('@post.ImageUrl')" />
+                        <img src="@post.ImageUrl" alt="@post.Title" class="img-fluid rounded"
+                            style="max-height: 200px; width: auto;" data-bs-toggle="modal" data-bs-target="#imageModal"
+                            onclick="showImageModal('@post.ImageUrl')" />
                     }
 
                     @if (post.SelectedTags != null && post.SelectedTags.Count > 0)
@@ -67,26 +86,41 @@
                             <div class="d-flex flex-wrap gap-2 mt-2">
                                 @{
                                     var tagColors = new Dictionary<string, string>
-                                    {
-                                        { "technology", "#6a11cb" },
-                                        { "art", "#f39c12" },
-                                        { "life", "#e74c3c" },
-                                        { "music", "#3498db" },
-                                        { "fun", "#2ecc71" },
-                                        { "memes", "#e91e63" }
-                                    };
+                        {
+                        { "technology", "#6a11cb" },
+                        { "art", "#f39c12" },
+                        { "life", "#e74c3c" },
+                        { "music", "#3498db" },
+                        { "fun", "#2ecc71" },
+                        { "memes", "#e91e63" }
+                        };
                                 }
 
                                 @foreach (var tag in post.SelectedTags)
                                 {
                                     var color = tagColors.ContainsKey(tag.ToLower()) ? tagColors[tag.ToLower()] : "#ffffff";
-                                    <span class="badge" style="background-color: @color; color: #fff; padding: 0.5rem 1rem; border-radius: 15px; font-weight: bold;">
+                                    <span class="badge"
+                                        style="background-color: @color; color: #fff; padding: 0.5rem 1rem; border-radius: 15px; font-weight: bold;">
                                         @tag.Substring(0, 1).ToUpper()@tag.Substring(1)
                                     </span>
                                 }
                             </div>
                         </div>
                     }
+
+                    <div class="vote-section mt-3 d-flex align-items-center">
+                        <button class="btn btn-outline-success btn-sm me-2" data-post-id="@post.PostID"
+                            onclick="vote('@post.PostID', 'upvote', this)">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="text-light mx-2" id="vote-count-@post.PostID">
+                            @post.Upvotes - @post.Downvotes
+                        </span>
+                        <button class="btn btn-outline-danger btn-sm" data-post-id="@post.PostID"
+                            onclick="vote('@post.PostID', 'downvote', this)">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-footer bg-dark d-flex justify-content-between align-items-center">
                     <a asp-action="Details" asp-controller="Posts" asp-route-id="@post.PostID"
@@ -94,8 +128,8 @@
                         <i class="fas fa-comments"></i> Comments
                     </a>
 
-                    <a asp-action="Details" asp-route-id="@post.PostID"
-                        class="btn btn-info btn-sm rounded-pill shadow me-2" title="View Details">
+                    <a asp-action="Details" asp-route-id="@post.PostID" class="btn btn-info btn-sm rounded-pill shadow me-2"
+                        title="View Details">
                         <i class="fas fa-eye"></i> See More!
                     </a>
                 </div>
@@ -124,6 +158,26 @@
     function showImageModal(imageUrl) {
         var modalImage = document.getElementById('modalImage');
         modalImage.src = imageUrl;
+    }
+
+    function vote(postId, action, button) {
+        $.ajax({
+            url: '/' + action,
+            method: 'POST',
+            data: { postId: postId },
+            success: function (response) {
+                if (response.success) {
+                    $('#vote-count-' + postId).text(response.upvotes + " - " + response.downvotes);
+                    $(button).prop('disabled', true).addClass('disabled');
+                    $('.btn[data-post-id="' + postId + '"]:not(' + $(button).selector + ')').prop('disabled', true).addClass('disabled');
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function () {
+                alert('An error occurred while processing your request.');
+            }
+        });
     }
 </script>
 
@@ -164,5 +218,19 @@
 
     .btn:hover {
         transform: scale(1.05);
+    }
+
+    .vote-section {
+        display: flex;
+        align-items: center;
+    }
+
+    .vote-section button {
+        margin: 0 5px;
+    }
+
+    .btn.disabled {
+        opacity: 0.5;
+        pointer-events: none;
     }
 </style>

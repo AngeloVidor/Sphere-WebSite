@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using SphereWebSite.Data.Models.PostsVote;
 
 namespace SphereWebsite.Data.Models
 {
@@ -31,7 +32,17 @@ namespace SphereWebsite.Data.Models
         public string Tags
         {
             get => string.Join(",", SelectedTags);
-            set => SelectedTags = string.IsNullOrEmpty(value) ? new List<string>() : value.Split(',').ToList();
+            set =>
+                SelectedTags = string.IsNullOrEmpty(value)
+                    ? new List<string>()
+                    : value.Split(',').ToList();
         }
+
+        public int Upvotes { get; set; } = 0;
+        public int Downvotes { get; set; } = 0;
+        public ICollection<PostVoteModel> Votes { get; set; } = new List<PostVoteModel>();
+
+        [NotMapped]
+        public int VoteCount => Upvotes - Downvotes;
     }
 }

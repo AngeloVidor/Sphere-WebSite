@@ -71,7 +71,11 @@ namespace SphereWebsite.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostsModel post, IFormFile? image, string[] selectedTags)
+        public async Task<IActionResult> Create(
+            PostsModel post,
+            IFormFile? image,
+            string[] selectedTags
+        )
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             post.UserId = int.TryParse(userId, out var id) ? id : 0;
@@ -136,6 +140,44 @@ namespace SphereWebsite.Controllers
         {
             await _postsService.DeletePost(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost("Upvote")]
+        public async Task<IActionResult> Upvote(int postId)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _postsService.VoteOnPost(postId, userId, true);
+
+            var post = await _postsService.GetPostById(postId);
+            Console.WriteLine($"Upvotes: {post.Upvotes}, Downvotes: {post.Downvotes}");
+
+            return Json(
+                new
+                {
+                    success = true,
+                    upvotes = post.Upvotes,
+                    downvotes = post.Downvotes
+                }
+            );
+        }
+
+        [HttpPost("Downvote")]
+        public async Task<IActionResult> DownVote(int postId)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _postsService.VoteOnPost(postId, userId, false);
+
+            var post = await _postsService.GetPostById(postId);
+            Console.WriteLine($"Upvotes: {post.Upvotes}, Downvotes: {post.Downvotes}"); 
+
+            return Json(
+                new
+                {
+                    success = true,
+                    upvotes = post.Upvotes,
+                    downvotes = post.Downvotes
+                }
+            );
         }
     }
 }

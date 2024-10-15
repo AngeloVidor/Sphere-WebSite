@@ -6,6 +6,7 @@ using SphereWebsite.Business.Interfaces.S3Interface;
 using SphereWebsite.Data.Interfaces.PostsInterface;
 using SphereWebsite.Data.Interfaces.PostsServiceInterface;
 using SphereWebsite.Data.Models;
+using SphereWebSite.Data.Models.PostsVote;
 
 namespace SphereWebsite.Business.Services.PostsServices
 {
@@ -20,7 +21,11 @@ namespace SphereWebsite.Business.Services.PostsServices
             _s3Service = s3Service;
         }
 
-        public async Task<PostsModel> CreatePost(PostsModel post, IFormFile? image = null, string[]? selectedTags = null)
+        public async Task<PostsModel> CreatePost(
+            PostsModel post,
+            IFormFile? image = null,
+            string[]? selectedTags = null
+        )
         {
             if (string.IsNullOrEmpty(post.UserId.ToString()) || post.UserId <= 0)
             {
@@ -82,6 +87,55 @@ namespace SphereWebsite.Business.Services.PostsServices
             existingPost.UserId = post.UserId;
 
             return await _postRepository.UpdatePost(existingPost);
+        }
+
+        public async Task VoteOnPost(int postId, int userId, bool isUpvote)
+        {
+            var post = await _postRepository.GetPostById(postId);
+            if (post == null)
+            {
+                throw new ArgumentException("Post não encontrado.");
+            }
+
+            var existingVote = post.Votes.FirstOrDefault(v => v.UserId == userId);
+
+            if (existingVote != null)
+            {
+                if (existingVote.IsUpvote != isUpvote)
+                {
+                    existingVote.IsUpvote = isUpvote; 
+                    if (isUpvote)
+                    {
+                        post.Upvotes++;
+                        post.Downvotes--;
+                    }
+                    else
+                    {
+                        post.Upvotes--;
+                        post.Downvotes++;
+                    }
+                }
+            }
+            else
+            {
+                var newVote = new PostVoteModel
+                {
+                    PostId = postId,
+                    UserId = userId,
+                    IsUpvote = isUpvote
+                };
+                post.Votes.Add(newVote);
+                if (isUpvote)
+                {
+                    post.Upvotes++;
+                }
+                else
+                {
+                    post.Downvotes++;
+                }
+            }
+
+            await _postRepository.UpdatePost(post);
         }
     }
 }
