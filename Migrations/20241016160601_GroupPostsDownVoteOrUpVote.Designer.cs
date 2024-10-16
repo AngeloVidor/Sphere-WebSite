@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SphereWebsite.Data.ApplicationContext;
 
@@ -11,9 +12,11 @@ using SphereWebsite.Data.ApplicationContext;
 namespace SphereWebsite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241016160601_GroupPostsDownVoteOrUpVote")]
+    partial class GroupPostsDownVoteOrUpVote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,37 +110,6 @@ namespace SphereWebsite.Migrations
                     b.ToTable("GroupFeedComments");
                 });
 
-            modelBuilder.Entity("SphereWebSite.Data.Models.GroupVote.GroupPostsVoteModel", b =>
-                {
-                    b.Property<int>("VoteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VoteId"));
-
-                    b.Property<int?>("GroupPostsVoteModelVoteId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsUpvote")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("VoteId");
-
-                    b.HasIndex("GroupPostsVoteModelVoteId");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("GroupPostsVoteModel");
-                });
-
             modelBuilder.Entity("SphereWebSite.Data.Models.PostsVote.PostVoteModel", b =>
                 {
                     b.Property<int>("VoteId")
@@ -146,6 +118,9 @@ namespace SphereWebsite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VoteId"));
 
+                    b.Property<int?>("GroupPostsModelGroupPostID")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsUpvote")
                         .HasColumnType("bit");
 
@@ -156,6 +131,8 @@ namespace SphereWebsite.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("VoteId");
+
+                    b.HasIndex("GroupPostsModelGroupPostID");
 
                     b.HasIndex("PostId");
 
@@ -375,31 +352,12 @@ namespace SphereWebsite.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SphereWebSite.Data.Models.GroupVote.GroupPostsVoteModel", b =>
-                {
-                    b.HasOne("SphereWebSite.Data.Models.GroupVote.GroupPostsVoteModel", null)
-                        .WithMany("Votes")
-                        .HasForeignKey("GroupPostsVoteModelVoteId");
-
-                    b.HasOne("SphereWebsite.Data.Models.GroupPostsModel", "Post")
-                        .WithMany("Votes")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SphereWebsite.Data.Models.UserModel", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SphereWebSite.Data.Models.PostsVote.PostVoteModel", b =>
                 {
+                    b.HasOne("SphereWebsite.Data.Models.GroupPostsModel", null)
+                        .WithMany("Votes")
+                        .HasForeignKey("GroupPostsModelGroupPostID");
+
                     b.HasOne("SphereWebsite.Data.Models.PostsModel", "Post")
                         .WithMany("Votes")
                         .HasForeignKey("PostId")
@@ -484,11 +442,6 @@ namespace SphereWebsite.Migrations
                     b.Navigation("UserGroups");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("SphereWebSite.Data.Models.GroupVote.GroupPostsVoteModel", b =>
-                {
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("SphereWebsite.Data.Models.GroupPostsModel", b =>

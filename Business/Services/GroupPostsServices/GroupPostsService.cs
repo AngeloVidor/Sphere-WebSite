@@ -57,5 +57,10 @@ namespace SphereWebSite.Business.Services
         {
             await _groupPostsRepository.DeletePostAsync(postId);
         }
+
+         public async Task<bool> AddOrUpdateVoteAsync(int postId, int userId, bool isUpvote)
+        {
+            return await _groupPostsRepository.AddOrUpdateVoteAsync(postId, userId, isUpvote);
+        }
     }
 }

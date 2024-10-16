@@ -13,5 +13,6 @@ namespace SphereWebSite.Business.Interfaces.GroupPostsInterface
         Task AddPostAsync(GroupPostsModel post, IFormFile? file);
         Task UpdatePostAsync(GroupPostsModel post);
         Task DeletePostAsync(int postId);
+        Task<bool> AddOrUpdateVoteAsync(int postId, int userId, bool isUpvote);
     }
 }

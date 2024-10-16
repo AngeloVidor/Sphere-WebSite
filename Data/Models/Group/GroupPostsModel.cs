@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using SphereWebSite.Data.Models.Group;
+using SphereWebSite.Data.Models.GroupVote;
+using SphereWebSite.Data.Models.PostsVote;
 
 namespace SphereWebsite.Data.Models
 {
@@ -43,5 +45,11 @@ namespace SphereWebsite.Data.Models
                     ? new List<string>()
                     : value.Split(',').ToList();
         }
+
+        public ICollection<GroupPostsVoteModel> Votes { get; set; }
+        [NotMapped]
+        public int VoteCount => Upvotes - Downvotes;
+        public int Upvotes { get; set; } = 0;
+        public int Downvotes { get; set; } = 0;
     }
 }

@@ -7,8 +7,8 @@ using SphereWebSite.Business.Interfaces.GroupPostsInterface;
 using SphereWebsite.Business.Interfaces.S3Interface;
 using SphereWebsite.Business.Interfaces.UserInterface;
 using SphereWebsite.Data.Models;
-using SphereWebSite.Data.Models.Group;
 using SphereWebSite.Data.Models;
+using SphereWebSite.Data.Models.Group;
 
 namespace SphereWebSite.Presentation.Controllers
 {
@@ -163,6 +163,52 @@ namespace SphereWebSite.Presentation.Controllers
             return RedirectToAction("Details", "GroupPosts", new { id = post.GroupId });
         }
 
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upvote(int postId)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var result = await _groupPostsService.AddOrUpdateVoteAsync(postId, userId, true);
+
+            if (!result)
+            {
+                TempData["Error"] = "Você já votou neste post.";
+            }
+            else
+            {
+                var post = await _groupPostsService.GetPostByIdAsync(postId);
+                if (post != null)
+                {
+                    return RedirectToAction("Details", new { id = post.GroupId });
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Downvote(int postId)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var result = await _groupPostsService.AddOrUpdateVoteAsync(postId, userId, false);
+
+            if (!result)
+            {
+                TempData["Error"] = "Você já votou neste post.";
+            }
+            else
+            {
+                var post = await _groupPostsService.GetPostByIdAsync(postId);
+                if (post != null)
+                {
+                    return RedirectToAction("Details", new { id = post.GroupId });
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

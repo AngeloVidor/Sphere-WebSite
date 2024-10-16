@@ -12,5 +12,6 @@ namespace SphereWebsite.Data.Repositories
         Task AddPostAsync(GroupPostsModel post);
         Task UpdatePostAsync(GroupPostsModel post);
         Task DeletePostAsync(int postId);
+        Task<bool> AddOrUpdateVoteAsync(int postId, int userId, bool isUpvote);
     }
 }
