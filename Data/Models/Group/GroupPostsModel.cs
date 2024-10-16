@@ -46,6 +46,7 @@ namespace SphereWebsite.Data.Models
                     : value.Split(',').ToList();
         }
 
+
         public ICollection<GroupPostsVoteModel> Votes { get; set; }
         [NotMapped]
         public int VoteCount => Upvotes - Downvotes;

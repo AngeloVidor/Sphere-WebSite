@@ -41,7 +41,9 @@ namespace SphereWebSite.Presentation.Controllers
                 return NotFound();
             }
 
-            groupModel.Posts = (await _groupPostsService.GetPostsByGroupIdAsync(id)).ToList();
+            groupModel.Posts = (await _groupPostsService.GetPostsByGroupIdAsync(id))
+                .OrderByDescending(post => post.CreatedAt) 
+                .ToList();
 
             return View("~/Views/Groups/GroupPosts/Details.cshtml", groupModel);
         }
@@ -92,6 +94,11 @@ namespace SphereWebSite.Presentation.Controllers
             {
                 _logger.LogInformation("Nenhuma imagem foi enviada. A imagem é opcional.");
                 post.ImageUrl = null;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.Remove(nameof(post.Votes));
             }
 
             if (ModelState.IsValid)
